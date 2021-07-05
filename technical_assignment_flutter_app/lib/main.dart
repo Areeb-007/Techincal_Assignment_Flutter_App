@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 import 'package:technical_assignment_flutter_app/screens/login_screen.dart';
 import 'package:technical_assignment_flutter_app/screens/register_screen.dart';
+import 'package:technical_assignment_flutter_app/widgets/drawer.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,12 +13,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider.value(value: Auth())],
-      child: MaterialApp(
-        home: MyHome(),
-        debugShowCheckedModeBanner: false,
-      ),
-    );
+        providers: [ChangeNotifierProvider.value(value: Auth())],
+        child: MaterialApp(
+          home: MyHome(),
+          theme: ThemeData(
+            primarySwatch: Colors.pink,
+            accentColor: Colors.amber,
+            canvasColor: Color.fromRGBO(255, 254, 229, 1),
+            fontFamily: 'Raleway',
+            textTheme: ThemeData.light().textTheme.copyWith(
+                  bodyText2: TextStyle(
+                    color: Color.fromRGBO(20, 51, 51, 1),
+                  ),
+                ),
+          ),
+          debugShowCheckedModeBanner: false,
+        ));
   }
 }
 
@@ -26,48 +37,7 @@ class MyHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Home page')),
-      drawer: Drawer(
-        child: Container(
-          color: Color.fromRGBO(50, 75, 205, 1),
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              const SizedBox(
-                height: 38,
-              ),
-              // DrawerHeader(
-              //   decoration: BoxDecoration(
-              //     color: Colors.blue,
-              //   ),
-              //   child: Text('Techinal Application'),
-              // ),
-              ListTile(
-                title: Text('Login Screen'),
-                onTap: () {
-                  // Update the state of the app
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()));
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text('Register Screen'),
-                onTap: () {
-                  // Update the state of the app
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RegisterScreen()));
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: MainDrawer(),
       body: Center(
         child: Container(
           padding: EdgeInsets.all(20),
