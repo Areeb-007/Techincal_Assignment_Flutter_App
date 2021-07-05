@@ -1,1 +1,7 @@
-123123
+							How to Approach
+
+1-> At First I am going to create the screens For resgister and login user.
+2-> Then I am going to add the functionality for Authentication and logic for register and login user
+3-> Then I will look forward towards navigation drawer
+4-> Then I am going to have a screen for dashboard
+
