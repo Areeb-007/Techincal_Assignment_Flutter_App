@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -7,26 +8,46 @@ import 'package:technical_assignment_flutter_app/models/user.dart';
 
 class Auth with ChangeNotifier {
   static const baseUrl = 'http://192.168.18.118:3000';
-  late String _token;
+  late String? _token;
   late DateTime _expiryDate;
-  late int _userID;
+  late int? _userID;
 
-  Future<void> signin(String email, String password) async {
-    var response = await http.post(Uri.parse(baseUrl + '/login/signin'),
-        headers: <String, String>{
-          'Content-type': 'application/json; charset=UTF-8'
-        },
-        body: jsonEncode(<String, String>{
-          'Username': email,
-          'Password': password,
-        }));
+  String? get TokenValue {
+    return _token;
+  }
+
+  //------------------------------------------SignIn---------------------------------------------------------//
+
+  Future<bool> signin(String email, String password) async {
+    var response;
+    try {
+      response = await http.post(Uri.parse(baseUrl + '/login/signin'),
+          headers: <String, String>{
+            'Content-type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(<String, String>{
+            'Username': email,
+            'Password': password,
+          }));
+    } catch (ex) {
+      print(ex.toString());
+      return false;
+    }
     print(json.decode(response.body));
     var responseBody = json.decode(response.body);
+    String? msg = responseBody['msg'];
 
-    _token = json.decode(response.body)['token'];
-    _userID = responseBody['user_id'];
-    print(_token.isEmpty ? 'No token' : _userID);
+    if (msg != null && msg.isNotEmpty) {
+      return false;
+    } else {
+      _token = json.decode(response.body)['token'];
+      _userID = responseBody['UserID'];
+      print(_token!.isEmpty ? 'No token' : _userID);
+      return true;
+    }
   }
+
+  //------------------------------------------SignUp---------------------------------------------------------//
 
   Future<void> signUp(User user) async {
     var response = await http.post(Uri.parse(baseUrl + '/login/signup'),
@@ -44,8 +65,8 @@ class Auth with ChangeNotifier {
     var responseBody = json.decode(response.body);
     print(responseBody);
     _token = responseBody['token'];
-    _userID = responseBody['user_id'];
-    print(_token.isEmpty ? 'No token' : _userID);
+    _userID = responseBody['UserID'];
+    print(_token!.isEmpty ? 'No token' : _userID);
   }
 
 //   Future<void> getData() async {

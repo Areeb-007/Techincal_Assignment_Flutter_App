@@ -24,6 +24,23 @@ class RegisterScreenState extends State<RegisterScreen> {
   // Note: This is a GlobalKey<FormState>,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+  final _lastNameFocusNode = FocusNode();
+  final _username = FocusNode();
+  final _password = FocusNode();
+  final _address = FocusNode();
+  final _phoneNumber = FocusNode();
+  final _register = FocusNode();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _lastNameFocusNode.dispose();
+    _username.dispose();
+    _password.dispose();
+    _address.dispose();
+    _phoneNumber.dispose();
+    _register.dispose();
+  }
 
   Future<void> _saveform() async {
     _formKey.currentState!.save();
@@ -44,150 +61,187 @@ class RegisterScreenState extends State<RegisterScreen> {
     // Build a Form widget using the _formKey created above.
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Form'),
         ),
-        body: Container(
-          margin: EdgeInsets.all(20),
-          padding: EdgeInsets.all(20),
-          child: Center(
-            child: Column(children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    TextFormField(
-                      decoration: InputDecoration(labelText: 'First Name'),
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                      },
-                      onSaved: (value) {
-                        _editedUser = User(
-                            userID: 0,
-                            firstName: value as String,
-                            lastName: _editedUser.lastName,
-                            username: _editedUser.username,
-                            password: _editedUser.password,
-                            address: _editedUser.address,
-                            phoneNumber: _editedUser.phoneNumber);
-                      },
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: 'Last Name'),
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                      },
-                      onSaved: (value) {
-                        _editedUser = User(
-                            userID: 0,
-                            firstName: _editedUser.firstName,
-                            lastName: value as String,
-                            username: _editedUser.username,
-                            password: _editedUser.password,
-                            address: _editedUser.address,
-                            phoneNumber: _editedUser.phoneNumber);
-                      },
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: 'Username'),
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                      },
-                      onSaved: (value) {
-                        _editedUser = User(
-                            userID: 0,
-                            firstName: _editedUser.firstName,
-                            lastName: _editedUser.lastName,
-                            username: value as String,
-                            password: _editedUser.password,
-                            address: _editedUser.address,
-                            phoneNumber: _editedUser.phoneNumber);
-                      },
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: 'Password'),
-                      // The validator receives the text that the user has entered.
-                      obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _editedUser = User(
-                            userID: 0,
-                            firstName: _editedUser.firstName,
-                            lastName: _editedUser.lastName,
-                            username: _editedUser.username,
-                            password: value as String,
-                            address: _editedUser.address,
-                            phoneNumber: _editedUser.phoneNumber);
-                      },
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: 'Address'),
-                      // The validator receives the text that the user has entered.
-                      onSaved: (value) {
-                        _editedUser = User(
-                            userID: 0,
-                            firstName: _editedUser.firstName,
-                            lastName: _editedUser.lastName,
-                            username: _editedUser.username,
-                            password: _editedUser.password,
-                            address: value as String,
-                            phoneNumber: _editedUser.phoneNumber);
-                      },
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: 'Phone Number'),
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a Number';
-                        }
-                      },
-                      onSaved: (value) {
-                        _editedUser = User(
-                            userID: 0,
-                            firstName: _editedUser.firstName,
-                            lastName: _editedUser.lastName,
-                            username: _editedUser.username,
-                            password: _editedUser.password,
-                            address: _editedUser.address,
-                            phoneNumber: value as String);
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Validate returns true if the form is valid, or false otherwise.
-                          if (_formKey.currentState!.validate()) {
-                            // If the form is valid, display a snackbar. In the real world,
-                            // you'd often call a server or save the information in a database.
-                            _saveform();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Processing Data')));
+        body: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
+            child: Center(
+              child: Column(children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'First Name'),
+                        // The validator receives the text that the user has entered.
+                        // focusNode: _registerFocusNode,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context)
+                              .requestFocus(_lastNameFocusNode);
+                        },
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
                           }
                         },
-                        child: Text('Register'),
+                        onSaved: (value) {
+                          _editedUser = User(
+                              userID: 0,
+                              firstName: value as String,
+                              lastName: _editedUser.lastName,
+                              username: _editedUser.username,
+                              password: _editedUser.password,
+                              address: _editedUser.address,
+                              phoneNumber: _editedUser.phoneNumber);
+                        },
                       ),
-                    ),
-                  ],
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'Last Name'),
+                        // The validator receives the text that the user has entered.
+                        focusNode: _lastNameFocusNode,
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                        },
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_username);
+                        },
+                        onSaved: (value) {
+                          _editedUser = User(
+                              userID: 0,
+                              firstName: _editedUser.firstName,
+                              lastName: value as String,
+                              username: _editedUser.username,
+                              password: _editedUser.password,
+                              address: _editedUser.address,
+                              phoneNumber: _editedUser.phoneNumber);
+                        },
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'Username'),
+                        // The validator receives the text that the user has entered.
+                        focusNode: _username,
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          bool status = RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(value.toString());
+                          return status ? null : 'Invalid Email';
+                        },
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_password);
+                        },
+                        onSaved: (value) {
+                          _editedUser = User(
+                              userID: 0,
+                              firstName: _editedUser.firstName,
+                              lastName: _editedUser.lastName,
+                              username: value as String,
+                              password: _editedUser.password,
+                              address: _editedUser.address,
+                              phoneNumber: _editedUser.phoneNumber);
+                        },
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'Password'),
+                        // The validator receives the text that the user has entered.
+                        focusNode: _password,
+                        obscureText: true,
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_address);
+                        },
+                        onSaved: (value) {
+                          _editedUser = User(
+                              userID: 0,
+                              firstName: _editedUser.firstName,
+                              lastName: _editedUser.lastName,
+                              username: _editedUser.username,
+                              password: value as String,
+                              address: _editedUser.address,
+                              phoneNumber: _editedUser.phoneNumber);
+                        },
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'Address'),
+                        // The validator receives the text that the user has entered.
+                        maxLines: 3,
+                        focusNode: _address,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_phoneNumber);
+                        },
+                        keyboardType: TextInputType.multiline,
+                        onSaved: (value) {
+                          _editedUser = User(
+                              userID: 0,
+                              firstName: _editedUser.firstName,
+                              lastName: _editedUser.lastName,
+                              username: _editedUser.username,
+                              password: _editedUser.password,
+                              address: value as String,
+                              phoneNumber: _editedUser.phoneNumber);
+                        },
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'Phone Number'),
+                        textInputAction: TextInputAction.next,
+                        // The validator receives the text that the user has entered.
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a Number';
+                          }
+                        },
+                        focusNode: _phoneNumber,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_register);
+                        },
+                        onSaved: (value) {
+                          _editedUser = User(
+                              userID: 0,
+                              firstName: _editedUser.firstName,
+                              lastName: _editedUser.lastName,
+                              username: _editedUser.username,
+                              password: _editedUser.password,
+                              address: _editedUser.address,
+                              phoneNumber: value as String);
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: ElevatedButton(
+                          focusNode: _register,
+                          onPressed: () {
+                            // Validate returns true if the form is valid, or false otherwise.
+                            if (_formKey.currentState!.validate()) {
+                              // If the form is valid, display a snackbar. In the real world,
+                              // you'd often call a server or save the information in a database.
+                              _saveform();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Processing Data')));
+                            }
+                          },
+                          child: Text('Register'),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ]),
+              ]),
+            ),
           ),
         ),
       ),

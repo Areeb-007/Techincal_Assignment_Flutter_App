@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 // import 'package:technical_assignment_flutter_app/models/user.dart';
 import 'package:technical_assignment_flutter_app/models/userLogin.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
+import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
 import 'package:technical_assignment_flutter_app/widgets/drawer.dart';
 
 // import 'package:http/http.dart' as http;
@@ -29,8 +30,17 @@ class LoginScreenState extends State<LoginScreen> {
 
   Future<void> _saveform() async {
     _formKey.currentState!.save();
-    await Provider.of<Auth>(context, listen: false)
+    bool status = await Provider.of<Auth>(context, listen: false)
         .signin(_editedUser.username, _editedUser.password);
+    if (status) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => EmployeeData()));
+    } else {
+      AlertDialog(
+        title: Text('Login Error'),
+        content: Text('Login Failed'),
+      );
+    }
   }
 
   UserLogin _editedUser = UserLogin(
@@ -64,7 +74,7 @@ class LoginScreenState extends State<LoginScreen> {
                         bool status = RegExp(
                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(value.toString());
-                        return status ? '' : 'Invalid Expression';
+                        return status ? null : 'Invalid Email';
                       },
                       onSaved: (value) {
                         _editedUser = UserLogin(
