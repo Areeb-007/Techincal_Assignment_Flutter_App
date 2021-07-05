@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:technical_assignment_flutter_app/models/user.dart';
 
 class Auth with ChangeNotifier {
   static const baseUrl = 'http://192.168.18.118:3000';
@@ -27,14 +28,18 @@ class Auth with ChangeNotifier {
     print(_token.isEmpty ? 'No token' : _userID);
   }
 
-  Future<void> signUp(String email, String password) async {
+  Future<void> signUp(User user) async {
     var response = await http.post(Uri.parse(baseUrl + '/login/signup'),
         headers: <String, String>{
           'Content-type': 'application/json; charset=UTF-8'
         },
         body: jsonEncode(<String, String>{
-          'email': email,
-          'password': password,
+          'FirstName': user.firstName,
+          'LastName': user.lastName,
+          'Username': user.username,
+          'Password': user.password,
+          'Address': user.address,
+          'PhoneNumber': user.phoneNumber
         }));
     var responseBody = json.decode(response.body);
     print(responseBody);
@@ -43,20 +48,21 @@ class Auth with ChangeNotifier {
     print(_token.isEmpty ? 'No token' : _userID);
   }
 
-  Future<void> getData() async {
-    const url = 'http://192.168.18.118:3000/data';
+//   Future<void> getData() async {
+//     const url = 'http://192.168.18.118:3000/data';
 
-    print(_token);
-    var response = await http.get(
-      Uri.parse(url),
-      headers: <String, String>{
-        'Content-type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $_token'
-      },
-    );
-    if (response.statusCode != 200) {
-      print('Token not Valid');
-    }
-    print(json.decode(response.body));
-  }
+//     print(_token);
+//     var response = await http.get(
+//       Uri.parse(url),
+//       headers: <String, String>{
+//         'Content-type': 'application/json; charset=UTF-8',
+//         'Authorization': 'Bearer $_token'
+//       },
+//     );
+//     if (response.statusCode != 200) {
+//       print('Token not Valid');
+//     }
+//     print(json.decode(response.body));
+//   }
+
 }

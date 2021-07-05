@@ -61,16 +61,10 @@ class LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(labelText: 'Email'),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        if (!value.contains('@')) {
-                          return 'Invalid Email Pattern';
-                        }
-                        if (!value.contains('.com')) {
-                          return 'Invalid Email Pattern';
-                        }
-                        return null;
+                        bool status = RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value.toString());
+                        return status ? '' : 'Invalid Expression';
                       },
                       onSaved: (value) {
                         _editedUser = UserLogin(

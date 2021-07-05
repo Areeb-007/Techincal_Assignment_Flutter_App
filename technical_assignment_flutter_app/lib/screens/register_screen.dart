@@ -1,7 +1,9 @@
 // import 'dart:convert';
 // import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
+import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 
 // import 'package:http/http.dart' as http;
 
@@ -23,22 +25,9 @@ class RegisterScreenState extends State<RegisterScreen> {
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> getData() async {
-    // _formKey.currentState!.save();
-    // postData();
-    // await Provider.of<Auth>(context, listen: false).get_Data();
-  }
-
   Future<void> _saveform() async {
     _formKey.currentState!.save();
-    // postData();
-    // await Provider.of<Auth>(context, listen: false)
-    // .signUp(_editedUser.email, _editedUser.password);
-  }
-
-  void _onPressed() {
-    // getData();
-    // Provider.of<Auth>(context, listen: false).get_Data();
+    await Provider.of<Auth>(context, listen: false).signUp(_editedUser);
   }
 
   var _editedUser = User(
@@ -69,49 +58,116 @@ class RegisterScreenState extends State<RegisterScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Email'),
+                      decoration: InputDecoration(labelText: 'First Name'),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter some text';
                         }
-                        if (!value.contains('@')) {
-                          return 'Invalid Email Pattern';
+                      },
+                      onSaved: (value) {
+                        _editedUser = User(
+                            userID: 0,
+                            firstName: value as String,
+                            lastName: _editedUser.lastName,
+                            username: _editedUser.username,
+                            password: _editedUser.password,
+                            address: _editedUser.address,
+                            phoneNumber: _editedUser.phoneNumber);
+                      },
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'Last Name'),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
                         }
-                        if (!value.contains('.com')) {
-                          return 'Invalid Email Pattern';
+                      },
+                      onSaved: (value) {
+                        _editedUser = User(
+                            userID: 0,
+                            firstName: _editedUser.firstName,
+                            lastName: value as String,
+                            username: _editedUser.username,
+                            password: _editedUser.password,
+                            address: _editedUser.address,
+                            phoneNumber: _editedUser.phoneNumber);
+                      },
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'Username'),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                      },
+                      onSaved: (value) {
+                        _editedUser = User(
+                            userID: 0,
+                            firstName: _editedUser.firstName,
+                            lastName: _editedUser.lastName,
+                            username: value as String,
+                            password: _editedUser.password,
+                            address: _editedUser.address,
+                            phoneNumber: _editedUser.phoneNumber);
+                      },
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'Password'),
+                      // The validator receives the text that the user has entered.
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        // _editedUser = User(
-                        //   email: value as String,
-                        //   userID: _editedUser.userID,
-                        //   password: _editedUser.password,
-                        // );
+                        _editedUser = User(
+                            userID: 0,
+                            firstName: _editedUser.firstName,
+                            lastName: _editedUser.lastName,
+                            username: _editedUser.username,
+                            password: value as String,
+                            address: _editedUser.address,
+                            phoneNumber: _editedUser.phoneNumber);
                       },
                     ),
                     TextFormField(
-                        decoration: InputDecoration(labelText: 'Password'),
-                        // The validator receives the text that the user has entered.
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          if (value.length < 3) {
-                            return 'Enter atleast 3 characters';
-                          }
-
-                          return null;
-                        },
-                        onSaved: (value) {
-                          // _editedUser = User(
-                          //   email: _editedUser.email,
-                          //   userID: _editedUser.userID,
-                          //   password: value as String,
-                          // );
-                        }),
+                      decoration: InputDecoration(labelText: 'Address'),
+                      // The validator receives the text that the user has entered.
+                      onSaved: (value) {
+                        _editedUser = User(
+                            userID: 0,
+                            firstName: _editedUser.firstName,
+                            lastName: _editedUser.lastName,
+                            username: _editedUser.username,
+                            password: _editedUser.password,
+                            address: value as String,
+                            phoneNumber: _editedUser.phoneNumber);
+                      },
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'Phone Number'),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a Number';
+                        }
+                      },
+                      onSaved: (value) {
+                        _editedUser = User(
+                            userID: 0,
+                            firstName: _editedUser.firstName,
+                            lastName: _editedUser.lastName,
+                            username: _editedUser.username,
+                            password: _editedUser.password,
+                            address: _editedUser.address,
+                            phoneNumber: value as String);
+                      },
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ElevatedButton(
@@ -125,13 +181,12 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 SnackBar(content: Text('Processing Data')));
                           }
                         },
-                        child: Text('Submit'),
+                        child: Text('Register'),
                       ),
                     ),
                   ],
                 ),
               ),
-              ElevatedButton(onPressed: _onPressed, child: Text('Get Data'))
             ]),
           ),
         ),

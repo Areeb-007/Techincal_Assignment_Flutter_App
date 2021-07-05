@@ -26,6 +26,7 @@ dependencies:
   http: ^0.13.3
   http_interceptor: ^1.0.0
   provider: ^5.0.0
+  # email_validator: '^1.0.6'
 
 
   # The following adds the Cupertino Icons font to your application.
