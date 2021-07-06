@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:intl/intl.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
 
 class Auth with ChangeNotifier {
@@ -12,7 +14,7 @@ class Auth with ChangeNotifier {
   late DateTime _expiryDate;
   late int? _userID;
 
-  String? get TokenValue {
+  String? get tokenValue {
     return _token;
   }
 
@@ -54,13 +56,17 @@ class Auth with ChangeNotifier {
         headers: <String, String>{
           'Content-type': 'application/json; charset=UTF-8'
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, Object>{
           'FirstName': user.firstName,
           'LastName': user.lastName,
           'Username': user.username,
           'Password': user.password,
           'Address': user.address,
-          'PhoneNumber': user.phoneNumber
+          'PhoneNumber': user.phoneNumber,
+          'IsActice': user.isActice,
+          'IsDeleted': user.isDeleted,
+          'CreatedBy': user.createdBy,
+          'CreatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
         }));
     var responseBody = json.decode(response.body);
     print(responseBody);

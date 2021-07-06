@@ -36,10 +36,14 @@ class LoginScreenState extends State<LoginScreen> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => EmployeeData()));
     } else {
-      AlertDialog(
-        title: Text('Login Error'),
-        content: Text('Login Failed'),
-      );
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Login Error'),
+              content: Text('Login Failed'),
+            );
+          });
     }
   }
 

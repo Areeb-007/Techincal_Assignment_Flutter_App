@@ -5,3 +5,5 @@
 3-> Then I will look forward towards navigation drawer
 4-> Then I am going to have a screen for dashboard
 
+5-> Today I am going to create screens for employee's CRUD and write their logic as well.
+
