@@ -40,19 +40,19 @@ class Employee {
 
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
-      empID: json['EmpID'],
-      userID: json['UserID'],
-      name: json['Name'],
-      email: json['Email'],
-      age: json['Age'],
-      designation: json['Designation'],
-      gender: json['Gender'],
-      dateOfBirth: DateTime.parse(json['DateOfBirth']),
-      isActive: json['IsActive'],
-      isDeleted: json['IsDeleted'],
-      createdBy: json['CreatedBy'],
-      // createdOn: (DateTime.parse(json['CreatedOn']))
-      createdOn: DateTime.now(),
-    );
+        empID: json['EmpID'],
+        userID: json['UserID'],
+        name: json['Name'],
+        email: json['Email'],
+        age: json['Age'],
+        designation: json['Designation'],
+        gender: json['Gender'],
+        dateOfBirth: DateTime.parse(json['DateOfBirth']),
+        isActive: json['IsActive'],
+        isDeleted: json['IsDeleted'],
+        createdBy: json['CreatedBy'],
+        createdOn: (DateTime.parse(json['CreatedOn']))
+        // createdOn: DateTime.now(),
+        );
   }
 }

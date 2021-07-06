@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
+import 'package:technical_assignment_flutter_app/screens/update_screen.dart';
 
 Widget listViewWidget(List<Employee> empList) {
   Future<void> callEmployeeDelete(BuildContext context, int empID) async {
@@ -26,6 +27,11 @@ Widget listViewWidget(List<Employee> empList) {
   void deleteData(BuildContext context, int iD) {
     print(iD);
     callEmployeeDelete(context, iD);
+  }
+
+  void updateData(BuildContext context, Employee emp) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => UpdateEmployeeScreen(emp)));
   }
 
   return Container(
