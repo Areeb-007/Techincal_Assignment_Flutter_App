@@ -52,6 +52,18 @@ class Auth with ChangeNotifier {
   //------------------------------------------SignUp---------------------------------------------------------//
 
   Future<void> signUp(User user) async {
+    print(jsonEncode(<String, Object>{
+      'FirstName': user.firstName,
+      'LastName': user.lastName,
+      'Username': user.username,
+      'Password': user.password,
+      'Address': user.address,
+      'PhoneNumber': user.phoneNumber,
+      'IsActice': user.isActice,
+      'IsDeleted': user.isDeleted,
+      'CreatedBy': user.createdBy,
+      'CreatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+    }));
     var response = await http.post(Uri.parse(baseUrl + '/login/signup'),
         headers: <String, String>{
           'Content-type': 'application/json; charset=UTF-8'
@@ -63,17 +75,20 @@ class Auth with ChangeNotifier {
           'Password': user.password,
           'Address': user.address,
           'PhoneNumber': user.phoneNumber,
-          'IsActice': user.isActice,
+          'IsActive': user.isActice,
           'IsDeleted': user.isDeleted,
           'CreatedBy': user.createdBy,
           'CreatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
         }));
+
     var responseBody = json.decode(response.body);
     print(responseBody);
     _token = responseBody['token'];
     _userID = responseBody['UserID'];
     print(_token!.isEmpty ? 'No token' : _userID);
   }
+
+  //-----------------------------------------------------Add Employee-----------------------------------------
 
 //   Future<void> getData() async {
 //     const url = 'http://192.168.18.118:3000/data';
