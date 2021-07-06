@@ -7,9 +7,13 @@ import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 // import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
+import 'package:technical_assignment_flutter_app/providers/authentication.dart';
+
+import 'employee_data.dart';
 // import 'package:technical_assignment_flutter_app/models/user.dart';
 // import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 
@@ -69,6 +73,7 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
       }
       setState(() {
         dateOfBirth = value;
+        _editedEmployee.setDateOfBirth = dateOfBirth!;
       });
     });
   }
@@ -78,23 +83,38 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
 
 //------------------------------------------------Add An Employee Logic---------------------------------------------------------
   Future<void> _saveform() async {
+    print(_editedEmployee.designation);
     _formKey.currentState!.save();
-    // await Provider.of<Auth>(context, listen: false).signUp(_editedUser);
+    bool status = await Provider.of<Auth>(context, listen: false)
+        .addEmployee(_editedEmployee);
+    if (status) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => EmployeeData()));
+    } else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Employee Didnt Added'),
+            );
+          });
+    }
   }
 
 //-------------------------------------------------Date of Birth Variable------------------------------------
   DateTime? dateOfBirth;
 //--------------------------------------------------For gender
-  GenderType? gender = GenderType.Male;
+  GenderType gender = GenderType.Male;
 
   var _editedEmployee = Employee(
       empID: -1,
       userID: 0,
       name: '',
       email: '',
-      age: -1,
+      age: 0,
       designation: '',
-      gender: '',
+      gender: 'Male',
       dateOfBirth: DateTime.now(),
       isActive: true,
       isDeleted: false,
@@ -199,7 +219,7 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                             userID: _editedEmployee.userID,
                             name: _editedEmployee.name,
                             email: _editedEmployee.email,
-                            age: value as int,
+                            age: int.parse(value!),
                             designation: _editedEmployee.designation,
                             gender: _editedEmployee.gender,
                             dateOfBirth: _editedEmployee.dateOfBirth,
@@ -264,8 +284,9 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                           groupValue: gender,
                           onChanged: (GenderType? value) {
                             setState(() {
-                              gender = value;
-                              _editedEmployee.genderType = value as String;
+                              gender = value!;
+                              print(gender);
+                              _editedEmployee.genderType = 'Male';
                             });
                           },
                         ),
@@ -275,8 +296,9 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                           groupValue: gender,
                           onChanged: (GenderType? value) {
                             setState(() {
-                              gender = value;
-                              _editedEmployee.genderType = value as String;
+                              gender = value!;
+                              print(gender);
+                              _editedEmployee.genderType = 'Female';
                             });
                           },
                         ),
@@ -286,8 +308,9 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                           groupValue: gender,
                           onChanged: (GenderType? value) {
                             setState(() {
-                              gender = value;
-                              _editedEmployee.genderType = value as String;
+                              gender = value!;
+                              print(gender);
+                              _editedEmployee.genderType = 'Other';
                             });
                           },
                         ),
@@ -348,7 +371,7 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                       // The validator receives the text that the user has entered.
                       // focusNode: _registerFocusNode,
                       onFieldSubmitted: (_) {
-                        FocusScope.of(context).requestFocus();
+                        FocusScope.of(context).requestFocus(_addFocusNode);
                       },
                       textInputAction: TextInputAction.next,
                       validator: (value) {
@@ -377,6 +400,7 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                       child: ElevatedButton(
                         focusNode: _addFocusNode,
                         onPressed: () {
+                          print(_editedEmployee.isActive);
                           // Validate returns true if the form is valid, or false otherwise.
                           if (_formKey.currentState!.validate()) {
                             // If the form is valid, display a snackbar. In the real world,
