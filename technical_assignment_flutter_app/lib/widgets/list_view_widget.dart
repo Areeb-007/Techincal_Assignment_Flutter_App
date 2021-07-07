@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
+import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
 // import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
 import 'package:technical_assignment_flutter_app/screens/update_screen.dart';
 
@@ -10,7 +11,8 @@ Widget listViewWidget(List<Employee> empList) {
     bool status = await Provider.of<Auth>(context, listen: false)
         .deleteEmployeeData(empID);
     if (status) {
-      Navigator.of(context).pop();
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => EmployeeData()));
     } else {
       showDialog(
           context: context,

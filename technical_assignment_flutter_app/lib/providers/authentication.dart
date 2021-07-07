@@ -198,31 +198,32 @@ class Auth with ChangeNotifier {
       'IsActive': emp.isActive,
       'IsDeleted': emp.isDeleted,
       'CreatedBy': emp.createdBy,
-      'CreatedOn': emp.createdOn,
+      'CreatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.createdOn),
       'UpdatedBy': emp.createdBy,
       'UpdatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
     }));
-    var response =
-        await http.post(Uri.parse(baseUrl + '/rest/delete?id=${emp.empID}'),
-            headers: <String, String>{
-              'Content-type': 'application/json; charset=UTF-8',
-              'Authorization': 'Bearer $_token',
-            },
-            body: jsonEncode(<String, Object>{
-              // 'UserID': _userID as int,
-              'Name': emp.name,
-              'Email': emp.email,
-              'Age': emp.age,
-              'Designation': emp.designation,
-              'Gender': emp.gender,
-              'DateOfBirth':
-                  DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.dateOfBirth),
-              'IsActive': emp.isActive,
-              'IsDeleted': emp.isDeleted,
-              'CreatedBy': emp.createdBy,
-              'CreatedOn':
-                  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-            }));
+    var response = await http.put(
+        Uri.parse(baseUrl + '/rest/update?id=${emp.empID}'),
+        headers: <String, String>{
+          'Content-type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $_token',
+        },
+        body: jsonEncode(<String, Object>{
+          // 'UserID': _userID as int,
+          'Name': emp.name,
+          'Email': emp.email,
+          'Age': emp.age,
+          'Designation': emp.designation,
+          'Gender': emp.gender,
+          'DateOfBirth':
+              DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.dateOfBirth),
+          'IsActive': emp.isActive,
+          'IsDeleted': emp.isDeleted,
+          'CreatedBy': emp.createdBy,
+          'CreatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.createdOn),
+          'UpdatedBy': emp.createdBy,
+          'UpdatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+        }));
 
     var responseBody = json.decode(response.body);
     print(responseBody);

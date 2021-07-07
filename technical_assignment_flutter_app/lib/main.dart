@@ -41,8 +41,12 @@ class MyHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home page')),
-      drawer: MainDrawer(),
+      appBar: AppBar(
+          title: Text(
+        'Home page',
+        style: TextStyle(leadingDistribution: TextLeadingDistribution.even),
+        textAlign: TextAlign.center,
+      )),
       body: Center(
         child: Container(
           padding: EdgeInsets.all(20),

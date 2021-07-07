@@ -89,16 +89,17 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
     print(_editedEmployee.designation);
     _formKey.currentState!.save();
     bool status = await Provider.of<Auth>(context, listen: false)
-        .addEmployee(_editedEmployee);
+        .updateEmployee(_editedEmployee);
     if (status) {
-      Navigator.of(context).pop();
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => EmployeeData()));
     } else {
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('Error'),
-              content: Text('Employee Didnt Added'),
+              content: Text('Employee Updation Failed'),
             );
           });
     }

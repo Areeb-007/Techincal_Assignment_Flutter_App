@@ -81,7 +81,7 @@ class _EmployeeDataState extends State<EmployeeData> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: Builder(
           builder: (context) => FloatingActionButton(
-              onPressed: () => Navigator.push(context,
+              onPressed: () => Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => AddEmployeeScreen())),
               child: Icon(Icons.add)),
         ));
