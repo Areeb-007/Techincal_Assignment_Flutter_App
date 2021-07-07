@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 
-import 'employee_data.dart';
+// import 'employee_data.dart';
 // import 'package:technical_assignment_flutter_app/models/user.dart';
 // import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 
@@ -88,8 +88,7 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
     bool status = await Provider.of<Auth>(context, listen: false)
         .addEmployee(_editedEmployee);
     if (status) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => EmployeeData()));
+      Navigator.of(context).pop();
     } else {
       showDialog(
           context: context,

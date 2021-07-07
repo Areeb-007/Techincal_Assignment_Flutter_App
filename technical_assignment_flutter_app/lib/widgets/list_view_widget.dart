@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
-import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
+// import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
 import 'package:technical_assignment_flutter_app/screens/update_screen.dart';
 
 Widget listViewWidget(List<Employee> empList) {
@@ -10,15 +10,14 @@ Widget listViewWidget(List<Employee> empList) {
     bool status = await Provider.of<Auth>(context, listen: false)
         .deleteEmployeeData(empID);
     if (status) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => EmployeeData()));
+      Navigator.of(context).pop();
     } else {
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('Error'),
-              content: Text('Employee Didnt Deleted'),
+              content: Text('Employee Deletion Failed'),
             );
           });
     }
@@ -30,8 +29,13 @@ Widget listViewWidget(List<Employee> empList) {
   }
 
   void updateData(BuildContext context, Employee emp) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => UpdateEmployeeScreen(emp)));
+    print(emp.name);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => UpdateEmployeeScreen(
+                  emp: emp,
+                )));
   }
 
   return Container(
@@ -41,6 +45,7 @@ Widget listViewWidget(List<Employee> empList) {
         itemBuilder: (context, position) {
           return Card(
             child: ListTile(
+              onTap: () => updateData(context, empList[position]),
               title: Text(
                 '${empList[position].name}',
                 style: TextStyle(

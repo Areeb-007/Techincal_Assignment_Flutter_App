@@ -14,7 +14,7 @@ class Auth with ChangeNotifier {
   String _token = '';
   late DateTime _expiryDate;
   int _userID = -1;
-
+  String _userName = '';
   String? get tokenValue {
     return _token;
   }
@@ -45,6 +45,7 @@ class Auth with ChangeNotifier {
     } else {
       _token = json.decode(response.body)['token'];
       _userID = responseBody['UserID'];
+
       print(_token.isEmpty ? 'No token' : _userID);
       return true;
     }
@@ -172,6 +173,59 @@ class Auth with ChangeNotifier {
       print('Token not Valid');
     }
     var responseBody = json.decode(response.body);
+    String msg = responseBody['msg'];
+    String msSc = responseBody['msg_sc'];
+    print(msSc.isEmpty ? msg : 'done');
+    if (msSc.isEmpty || msg.isNotEmpty) {
+      return false;
+    }
+    if (msSc.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+//----------------------------------------Update Employee------------------------------------------------------
+  Future<bool> updateEmployee(Employee emp) async {
+    print(jsonEncode(<String, Object>{
+      'Name': emp.name,
+      'Email': emp.email,
+      'Age': emp.age,
+      'Designation': emp.designation,
+      'Gender': emp.gender,
+      'DateOfBirth': DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.dateOfBirth),
+      'IsActive': emp.isActive,
+      'IsDeleted': emp.isDeleted,
+      'CreatedBy': emp.createdBy,
+      'CreatedOn': emp.createdOn,
+      'UpdatedBy': emp.createdBy,
+      'UpdatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
+    }));
+    var response =
+        await http.post(Uri.parse(baseUrl + '/rest/delete?id=${emp.empID}'),
+            headers: <String, String>{
+              'Content-type': 'application/json; charset=UTF-8',
+              'Authorization': 'Bearer $_token',
+            },
+            body: jsonEncode(<String, Object>{
+              // 'UserID': _userID as int,
+              'Name': emp.name,
+              'Email': emp.email,
+              'Age': emp.age,
+              'Designation': emp.designation,
+              'Gender': emp.gender,
+              'DateOfBirth':
+                  DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.dateOfBirth),
+              'IsActive': emp.isActive,
+              'IsDeleted': emp.isDeleted,
+              'CreatedBy': emp.createdBy,
+              'CreatedOn':
+                  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+            }));
+
+    var responseBody = json.decode(response.body);
+    print(responseBody);
     String msg = responseBody['msg'];
     String msSc = responseBody['msg_sc'];
     print(msSc.isEmpty ? msg : 'done');

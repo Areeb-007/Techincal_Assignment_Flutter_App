@@ -22,7 +22,7 @@ import 'employee_data.dart';
 // Create a Form widget.
 class UpdateEmployeeScreen extends StatefulWidget {
   final Employee emp;
-  UpdateEmployeeScreen(this.emp);
+  UpdateEmployeeScreen({required this.emp});
   @override
   UpdateEmployeeState createState() {
     return UpdateEmployeeState(emp);
@@ -67,7 +67,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
   void _showDateModal() {
     showDatePicker(
             context: context,
-            initialDate: DateTime.now(),
+            initialDate: emp.dateOfBirth,
             firstDate: DateTime(1900),
             lastDate: DateTime.now())
         .then((value) {
@@ -91,8 +91,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
     bool status = await Provider.of<Auth>(context, listen: false)
         .addEmployee(_editedEmployee);
     if (status) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => EmployeeData()));
+      Navigator.of(context).pop();
     } else {
       showDialog(
           context: context,
@@ -105,10 +104,36 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
     }
   }
 
+  // GenderType? getGender() {
+  //   GenderType? gen;
+  //   switch (emp.gender) {
+  //     case 'Male':
+  //       {
+  //         gen = GenderType.Male;
+  //         print("male");
+  //         return gen;
+  //       }
+  //     case 'Female':
+  //       {
+  //         gen = GenderType.Female;
+  //         print("female");
+  //         return gen;
+  //       }
+
+  //     case 'Other':
+  //       {
+  //         gen = GenderType.Other;
+  //         print("male");
+  //         return gen;
+  //       }
+  //   }
+  //   return gen;
+  // }
+
 //-------------------------------------------------Date of Birth Variable------------------------------------
   DateTime? dateOfBirth;
 //--------------------------------------------------For gender
-  GenderType gender = GenderType.Male;
+  GenderType? gender = GenderType.Male;
 
   var _editedEmployee = Employee(
       empID: -1,
@@ -126,6 +151,8 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _editedEmployee = emp;
+    dateOfBirth = emp.dateOfBirth;
     // Build a Form widget using the _formKey created above.
     return Material(
       child: SingleChildScrollView(
@@ -146,10 +173,11 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_emailFocusNode);
                       },
+                      initialValue: emp.name,
                       textInputAction: TextInputAction.next,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please a Name';
+                          return 'Please enter a Name';
                         }
                       },
                       onSaved: (value) {
@@ -172,6 +200,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                       decoration: InputDecoration(labelText: 'Email'),
                       // The validator receives the text that the user has entered.
                       focusNode: _emailFocusNode,
+                      initialValue: emp.email,
                       textInputAction: TextInputAction.next,
                       validator: (value) {
                         bool status = RegExp(
@@ -202,6 +231,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                       decoration: InputDecoration(labelText: 'Age'),
                       // The validator receives the text that the user has entered.
                       focusNode: _ageFocusNode,
+                      initialValue: emp.age.toString(),
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.number,
                       validator: (value) {
@@ -237,7 +267,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                       hintText: 'Please choose one',
                       value: designation,
                       contentPadding: EdgeInsets.all(5),
-                      filled: true,
+                      // filled: true,
                       onSaved: (value) {
                         _editedEmployee = Employee(
                             empID: _editedEmployee.empID,
@@ -333,7 +363,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                     ),
                     CheckboxListTileFormField(
                         title: Text('Is Active'),
-                        initialValue: true,
+                        initialValue: emp.isActive,
                         controlAffinity: ListTileControlAffinity.trailing,
                         onSaved: (value) {
                           _editedEmployee = Employee(
@@ -352,7 +382,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                         }),
                     CheckboxListTileFormField(
                         title: Text('Is Deleted'),
-                        initialValue: false,
+                        initialValue: emp.isDeleted,
                         controlAffinity: ListTileControlAffinity.trailing,
                         onSaved: (value) {
                           _editedEmployee = Employee(
@@ -373,6 +403,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                       decoration: InputDecoration(labelText: 'Creater'),
                       // The validator receives the text that the user has entered.
                       // focusNode: _registerFocusNode,
+                      initialValue: emp.createdBy,
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_addFocusNode);
                       },
@@ -413,7 +444,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                                 SnackBar(content: Text('Processing Data')));
                           }
                         },
-                        child: Text('Add Employee'),
+                        child: Text('Update Employee'),
                       ),
                     ),
                   ],
