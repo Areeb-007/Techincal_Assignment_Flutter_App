@@ -65,9 +65,12 @@ Widget listViewWidget(List<Employee> empList) {
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
-                  child: Icon(Icons.person),
-                  height: 100.0,
-                  width: 100.0,
+                  child: Icon(
+                    Icons.person,
+                    size: 60,
+                  ),
+                  height: 55.0,
+                  width: 50.0,
                 ),
               ),
             ),

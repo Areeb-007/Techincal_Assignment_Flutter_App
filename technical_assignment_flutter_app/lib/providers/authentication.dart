@@ -12,9 +12,21 @@ import 'package:technical_assignment_flutter_app/models/user.dart';
 class Auth with ChangeNotifier {
   static const baseUrl = 'http://192.168.18.118:3000';
   String _token = '';
-  late DateTime _expiryDate;
+  List<Employee> empList = [];
+  User user = User(
+      userID: 12,
+      firstName: 'firstName',
+      lastName: 'lastName',
+      username: 'username@email.com',
+      password: 'password',
+      address: 'address',
+      phoneNumber: 'phoneNumber',
+      isActice: true,
+      isDeleted: false,
+      createdBy: 'createdBy',
+      createdOn: DateTime.now());
+  // late DateTime _expiryDate;
   int _userID = -1;
-  String _userName = '';
   String? get tokenValue {
     return _token;
   }
@@ -53,7 +65,7 @@ class Auth with ChangeNotifier {
 
   //------------------------------------------SignUp---------------------------------------------------------//
 
-  Future<void> signUp(User user) async {
+  Future<bool> signUp(User user) async {
     print(jsonEncode(<String, Object>{
       'FirstName': user.firstName,
       'LastName': user.lastName,
@@ -88,6 +100,18 @@ class Auth with ChangeNotifier {
     _token = responseBody['token'];
     _userID = responseBody['UserID'];
     print(_token.isEmpty ? 'No token' : _userID);
+
+    String? msg = responseBody['msg'];
+
+    if (msg != null && msg.isNotEmpty) {
+      return false;
+    } else {
+      _token = json.decode(response.body)['token'];
+      _userID = responseBody['UserID'];
+
+      print(_token.isEmpty ? 'No token' : _userID);
+      return true;
+    }
   }
 
   //-----------------------------------------------------Add Employee-----------------------------------------
@@ -156,6 +180,7 @@ class Auth with ChangeNotifier {
     var rest = json.decode(response.body)['data'];
     List<Employee> list;
     list = rest.map<Employee>((json) => Employee.fromJson(json)).toList();
+    empList = list.toList();
     return list;
   }
 
@@ -239,6 +264,28 @@ class Auth with ChangeNotifier {
       return false;
     }
   }
+
+//-------------------------------------------------Get User Data------------------------------------------
+
+  Future<void> getUserData() async {
+    var response = await http.get(
+      Uri.parse(baseUrl + '/rest/dashboard'),
+      headers: <String, String>{
+        'Content-type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $_token'
+      },
+    );
+    if (response.statusCode != 200) {
+      print('Token not Valid');
+    }
+    // user = json.decode(response.body)['data'];
+    print(json.decode(response.body)['data']);
+    var list = json.decode(response.body)['data'];
+    List<User> usList = (list.map((usr) => User.fromJson(usr)).toList());
+    // user = usList[0];
+    print(usList[0]);
+  }
+
 //   Future<void> getData() async {
 //     const url = 'http://192.168.18.118:3000/data';
 

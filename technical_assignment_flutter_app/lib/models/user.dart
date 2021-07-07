@@ -24,4 +24,21 @@ class User {
     required this.createdBy,
     required this.createdOn,
   });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+        userID: json['UserID'],
+        firstName: json['FirstName'],
+        lastName: json['LastName'],
+        username: json['Username'],
+        password: json['Password'],
+        address: json['Address'],
+        phoneNumber: json['PhoneNumber'],
+        isActice: json['IsActive'],
+        isDeleted: json['IsDeleted'],
+        createdBy: json['CreatedBy'],
+        createdOn: (DateTime.parse(json['CreatedOn']))
+        // createdOn: DateTime.now(),
+        );
+  }
 }

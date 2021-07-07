@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
+
+import 'employee_data.dart';
 // import 'package:checkbox_formfield/checkbox_formfield.dart';
 
 // import 'package:http/http.dart' as http;
@@ -47,7 +49,21 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _saveform() async {
     _formKey.currentState!.save();
-    await Provider.of<Auth>(context, listen: false).signUp(_editedUser);
+    bool status =
+        await Provider.of<Auth>(context, listen: false).signUp(_editedUser);
+    if (status) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => EmployeeData()));
+    } else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Sign up Failed'),
+            );
+          });
+    }
   }
 
   var _editedUser = User(

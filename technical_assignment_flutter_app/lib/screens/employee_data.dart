@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 // import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
+// import 'package:technical_assignment_flutter_app/models/user.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 // import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 import 'package:technical_assignment_flutter_app/widgets/drawer.dart';
@@ -22,12 +23,13 @@ class EmployeeData extends StatefulWidget {
 
 class _EmployeeDataState extends State<EmployeeData> {
   late Future<List<Employee>> empList;
+  bool buffering = false;
+
   @override
   void initState() {
     super.initState();
     empList = fetchEmployees();
     print('Get Api Called from initState');
-    // print(empList);
   }
 
   Future<List<Employee>> fetchEmployees() async {
@@ -60,6 +62,12 @@ class _EmployeeDataState extends State<EmployeeData> {
       //     createdOn: DateTime.now()),
     ];
     list = await Provider.of<Auth>(context, listen: false).getEmployeeData();
+    if (list.isEmpty) {
+      setState(() {
+        print("agia idher");
+        buffering = true;
+      });
+    }
     //print(list);
     return list;
   }
@@ -68,14 +76,14 @@ class _EmployeeDataState extends State<EmployeeData> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('Home page')),
-        drawer: MainDrawer(),
+        drawer: MainDrawer(empList),
         body: Center(
           child: FutureBuilder(
               future: fetchEmployees(),
               builder: (context, snapshot) {
                 return snapshot.data != null
                     ? listViewWidget(snapshot.data as List<Employee>)
-                    : (Center(child: CircularProgressIndicator()));
+                    : Center(child: CircularProgressIndicator());
               }),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

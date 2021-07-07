@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:technical_assignment_flutter_app/models/employee.dart';
+// import 'package:technical_assignment_flutter_app/models/user.dart';
+import 'package:technical_assignment_flutter_app/screens/dashboard_screen.dart';
 import 'package:technical_assignment_flutter_app/screens/login_screen.dart';
 import 'package:technical_assignment_flutter_app/screens/register_screen.dart';
 
 class MainDrawer extends StatelessWidget {
+  final Future<List<Employee>> empList;
+  MainDrawer(this.empList);
   Widget buildListTile(String title, IconData icon, Function tapHandler) {
     return ListTile(
       leading: Icon(
@@ -47,7 +52,7 @@ class MainDrawer extends StatelessWidget {
             'Login',
             Icons.login,
             () {
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => LoginScreen()));
             },
           ),
@@ -55,8 +60,16 @@ class MainDrawer extends StatelessWidget {
             'Register',
             Icons.app_registration_outlined,
             () {
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => RegisterScreen()));
+            },
+          ),
+          buildListTile(
+            'Dashboard',
+            Icons.dashboard,
+            () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Dashboard()));
             },
           ),
         ],
