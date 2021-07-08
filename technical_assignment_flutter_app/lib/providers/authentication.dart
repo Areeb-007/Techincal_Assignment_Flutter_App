@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:intl/intl.dart';
+import 'package:technical_assignment_flutter_app/models/api_response.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
 
@@ -14,10 +15,10 @@ class Auth with ChangeNotifier {
   String _token = '';
   List<Employee> empList = [];
   User user = User(
-      userID: 12,
+      userID: 1,
       firstName: 'firstName',
       lastName: 'lastName',
-      username: 'username@email.com',
+      username: 'username',
       password: 'password',
       address: 'address',
       phoneNumber: 'phoneNumber',
@@ -267,7 +268,7 @@ class Auth with ChangeNotifier {
 
 //-------------------------------------------------Get User Data------------------------------------------
 
-  Future<void> getUserData() async {
+  Future<List<User>> getUserData() async {
     var response = await http.get(
       Uri.parse(baseUrl + '/rest/dashboard'),
       headers: <String, String>{
@@ -278,12 +279,10 @@ class Auth with ChangeNotifier {
     if (response.statusCode != 200) {
       print('Token not Valid');
     }
-    // user = json.decode(response.body)['data'];
-    print(json.decode(response.body)['data']);
-    var list = json.decode(response.body)['data'];
-    List<User> usList = (list.map((usr) => User.fromJson(usr)).toList());
-    // user = usList[0];
-    print(usList[0]);
+    var rest = json.decode(response.body)['data'];
+    List<User> list;
+    list = rest.map<User>((json) => User.fromJson(json)).toList();
+    return list;
   }
 
 //   Future<void> getData() async {

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 // import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
+import 'package:technical_assignment_flutter_app/models/user.dart';
 // import 'package:technical_assignment_flutter_app/models/user.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 // import 'package:technical_assignment_flutter_app/providers/authentication.dart';
@@ -23,7 +24,9 @@ class EmployeeData extends StatefulWidget {
 
 class _EmployeeDataState extends State<EmployeeData> {
   late Future<List<Employee>> empList;
+  late User user;
   bool buffering = false;
+  List<Employee> tempList = [];
 
   @override
   void initState() {
@@ -68,6 +71,8 @@ class _EmployeeDataState extends State<EmployeeData> {
         buffering = true;
       });
     }
+    tempList =
+        await Provider.of<Auth>(context, listen: false).getEmployeeData();
     //print(list);
     return list;
   }

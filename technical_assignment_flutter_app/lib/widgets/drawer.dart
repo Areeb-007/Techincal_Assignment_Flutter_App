@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
+import 'package:technical_assignment_flutter_app/models/user.dart';
 // import 'package:technical_assignment_flutter_app/models/user.dart';
 import 'package:technical_assignment_flutter_app/screens/dashboard_screen.dart';
 import 'package:technical_assignment_flutter_app/screens/login_screen.dart';
 import 'package:technical_assignment_flutter_app/screens/register_screen.dart';
 
 class MainDrawer extends StatelessWidget {
+  // final User user;
   final Future<List<Employee>> empList;
   MainDrawer(this.empList);
+
   Widget buildListTile(String title, IconData icon, Function tapHandler) {
     return ListTile(
       leading: Icon(
