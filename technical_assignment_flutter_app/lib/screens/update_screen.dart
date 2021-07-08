@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 // import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
+import 'package:technical_assignment_flutter_app/screens/dashboard_screen.dart';
 
 import 'employee_data.dart';
 // import 'package:technical_assignment_flutter_app/models/user.dart';
@@ -81,8 +82,21 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    designation = emp.designation;
+    if (emp.gender == "Male") {
+      gender = GenderType.Male;
+    } else if (emp.gender == "Female") {
+      gender = GenderType.Female;
+    } else {
+      gender = GenderType.Other;
+    }
+  }
+
 //------------------------------------------------Drop Down firs Item----------------------------------------------------------
-  String designation = 'Intern';
+  String? designation;
 
 //------------------------------------------------Add An Employee Logic---------------------------------------------------------
   Future<void> _saveform() async {
@@ -92,7 +106,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
         .updateEmployee(_editedEmployee);
     if (status) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => EmployeeData()));
+          context, MaterialPageRoute(builder: (context) => Dashboard()));
     } else {
       showDialog(
           context: context,
@@ -134,7 +148,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
 //-------------------------------------------------Date of Birth Variable------------------------------------
   DateTime? dateOfBirth;
 //--------------------------------------------------For gender
-  GenderType? gender = GenderType.Male;
+  GenderType? gender;
 
   var _editedEmployee = Employee(
       empID: -1,
@@ -266,7 +280,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                     DropDownFormField(
                       titleText: 'Select a designation',
                       hintText: 'Please choose one',
-                      value: designation,
+                      value: emp.designation.toString(),
                       contentPadding: EdgeInsets.all(5),
                       // filled: true,
                       onSaved: (value) {
