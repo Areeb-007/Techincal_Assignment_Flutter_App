@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
-import 'package:technical_assignment_flutter_app/models/user.dart';
-import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 
 Widget employeeInfo(BuildContext context, List<Employee> emp) {
   // User currentUser = Provider.of<Auth>(context, listen: false).getUserData().toString();

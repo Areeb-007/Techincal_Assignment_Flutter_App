@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
-import 'package:technical_assignment_flutter_app/screens/dashboard_screen.dart';
 import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
-// import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
 import 'package:technical_assignment_flutter_app/screens/update_screen.dart';
 
 Widget listViewWidget(List<Employee> empList) {
@@ -19,7 +17,20 @@ Widget listViewWidget(List<Employee> empList) {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Error'),
+              title: Text(
+                'Error',
+                style: TextStyle(fontSize: 30),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EmployeeData()));
+                    },
+                    child: Text('Ok'))
+              ],
               content: Text('Employee Deletion Failed'),
             );
           });

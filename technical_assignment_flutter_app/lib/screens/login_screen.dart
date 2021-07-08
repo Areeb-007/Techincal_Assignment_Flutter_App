@@ -11,6 +11,7 @@ import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
 // import 'package:http/http.dart' as http;
 
 // Create a Form widget.
+// ignore: must_be_immutable
 class LoginScreen extends StatefulWidget {
   Function changeBufferingStateToTrue = () {};
   LoginScreen(this.changeBufferingStateToTrue);

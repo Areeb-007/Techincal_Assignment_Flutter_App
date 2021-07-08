@@ -12,16 +12,8 @@ import 'package:provider/provider.dart';
 // import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
-import 'package:technical_assignment_flutter_app/screens/dashboard_screen.dart';
 import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
 
-// import 'employee_data.dart';
-// import 'package:technical_assignment_flutter_app/models/user.dart';
-// import 'package:technical_assignment_flutter_app/providers/authentication.dart';
-
-// import 'package:http/http.dart' as http;
-
-// Create a Form widget.
 class AddEmployeeScreen extends StatefulWidget {
   @override
   AddEmployeeState createState() {

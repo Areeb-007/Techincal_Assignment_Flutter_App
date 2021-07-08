@@ -6,7 +6,6 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:intl/intl.dart';
-import 'package:technical_assignment_flutter_app/models/api_response.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
 
@@ -207,19 +206,14 @@ class Auth with ChangeNotifier {
     );
     if (response.statusCode != 200) {
       print('Token not Valid');
+      return false;
     }
     var responseBody = json.decode(response.body);
-    String msg = responseBody['msg'];
-    String msSc = responseBody['msg_sc'];
-    print(msSc.isEmpty ? msg : 'done');
-    if (msSc.isEmpty || msg.isNotEmpty) {
+    if (responseBody['msg'] ==
+        'Employee not Updated or Employee with this id doesnot exsist') {
       return false;
     }
-    if (msSc.isNotEmpty) {
-      return true;
-    } else {
-      return false;
-    }
+    return true;
   }
 
 //----------------------------------------Update Employee------------------------------------------------------
@@ -238,42 +232,56 @@ class Auth with ChangeNotifier {
       'UpdatedBy': emp.createdBy,
       'UpdatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
     }));
-    var response = await http.put(
-        Uri.parse(baseUrl + '/rest/update?id=${emp.empID}'),
-        headers: <String, String>{
-          'Content-type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $_token',
-        },
-        body: jsonEncode(<String, Object>{
-          // 'UserID': _userID as int,
-          'Name': emp.name,
-          'Email': emp.email,
-          'Age': emp.age,
-          'Designation': emp.designation,
-          'Gender': emp.gender,
-          'DateOfBirth':
-              DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.dateOfBirth),
-          'IsActive': emp.isActive,
-          'IsDeleted': emp.isDeleted,
-          'CreatedBy': emp.createdBy,
-          'CreatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.createdOn),
-          'UpdatedBy': emp.createdBy,
-          'UpdatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-        }));
+    var response;
+    try {
+      response =
+          await http.put(Uri.parse(baseUrl + '/rest/update?id=${emp.empID}'),
+              headers: <String, String>{
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer $_token',
+              },
+              body: jsonEncode(<String, Object>{
+                // 'UserID': _userID as int,
+                'Name': emp.name,
+                'Email': emp.email,
+                'Age': emp.age,
+                'Designation': emp.designation,
+                'Gender': emp.gender,
+                'DateOfBirth':
+                    DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.dateOfBirth),
+                'IsActive': emp.isActive,
+                'IsDeleted': emp.isDeleted,
+                'CreatedBy': emp.createdBy,
+                'CreatedOn':
+                    DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.createdOn),
+                'UpdatedBy': emp.createdBy,
+                'UpdatedOn':
+                    DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+              }));
+    } catch (ex) {
+      print(ex.toString());
+      print('here it is');
+      return false;
+    }
 
     var responseBody = json.decode(response.body);
     print(responseBody);
-    String msg = responseBody['msg'];
-    String msSc = responseBody['msg_sc'];
-    print(msSc.isEmpty ? msg : 'done');
-    if (msSc.isEmpty || msg.isNotEmpty) {
+    // String msg = responseBody['msg'];
+    // String msSc = responseBody['msg_sc'];
+    // print(msSc.isEmpty ? msg : 'done');
+    // if (msSc.isEmpty || msg.isNotEmpty) {
+    //   return false;
+    // }
+    // if (msSc.isNotEmpty) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    if (responseBody['msg'] ==
+        'Employee not Updated or Employee with this id doesnot exsist') {
       return false;
     }
-    if (msSc.isNotEmpty) {
-      return true;
-    } else {
-      return false;
-    }
+    return true;
   }
 
 //-------------------------------------------------Get User Data------------------------------------------

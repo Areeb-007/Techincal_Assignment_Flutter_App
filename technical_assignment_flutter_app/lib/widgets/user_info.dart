@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
-import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 
 Widget userInfo(BuildContext context, List<User> user) {
   // User currentUser = Provider.of<Auth>(context, listen: false).getUserData().toString();
@@ -19,26 +17,18 @@ Widget userInfo(BuildContext context, List<User> user) {
                 ListTile(
                   contentPadding: EdgeInsets.all(2),
                   leading: Icon(Icons.person),
-                  title: Text(user[position].firstName == null
-                      ? 'null'
-                      : user[position].firstName),
-                  subtitle: Text(user[position].lastName == null
-                      ? 'null'
-                      : user[position].lastName),
+                  title: Text(user[position].firstName),
+                  subtitle: Text(user[position].lastName),
                 ),
                 ListTile(
                   contentPadding: EdgeInsets.all(2),
                   leading: Icon(Icons.mail),
-                  title: Text(user[position].username == null
-                      ? 'null'
-                      : user[position].username),
+                  title: Text(user[position].username),
                 ),
                 ListTile(
                   contentPadding: EdgeInsets.all(2),
                   leading: Icon(Icons.phone),
-                  title: Text(user[position].phoneNumber == null
-                      ? 'null'
-                      : user[position].phoneNumber),
+                  title: Text(user[position].phoneNumber),
                 ),
                 ListTile(
                   contentPadding: EdgeInsets.all(2),

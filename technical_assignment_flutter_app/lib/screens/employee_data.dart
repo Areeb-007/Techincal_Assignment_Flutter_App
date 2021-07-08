@@ -80,23 +80,40 @@ class _EmployeeDataState extends State<EmployeeData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Employees')),
-        drawer: MainDrawer(empList),
-        body: Center(
-          child: FutureBuilder(
-              future: fetchEmployees(),
-              builder: (context, snapshot) {
-                return snapshot.data != null
-                    ? listViewWidget(snapshot.data as List<Employee>)
-                    : Center(child: CircularProgressIndicator());
-              }),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Builder(
-          builder: (context) => FloatingActionButton(
-              onPressed: () => Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => AddEmployeeScreen())),
-              child: Icon(Icons.add)),
-        ));
+      appBar: AppBar(
+        title: Text('Employees'),
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddEmployeeScreen()));
+                },
+                icon: Icon(Icons.add)),
+          )
+        ],
+      ),
+      drawer: MainDrawer(empList),
+      body: Center(
+        child: FutureBuilder(
+            future: fetchEmployees(),
+            builder: (context, snapshot) {
+              return snapshot.data != null
+                  ? listViewWidget(snapshot.data as List<Employee>)
+                  : Center(child: CircularProgressIndicator());
+            }),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Builder(
+        builder: (context) => FloatingActionButton(
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => EmployeeData()));
+            },
+            child: Icon(Icons.refresh)),
+      ),
+    );
   }
 }

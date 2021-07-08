@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
-import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
 import 'package:technical_assignment_flutter_app/widgets/active_users.dart';
 import 'package:technical_assignment_flutter_app/widgets/designations_widget.dart';
 import 'package:technical_assignment_flutter_app/widgets/employee_details.dart';

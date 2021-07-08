@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
-import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
 import 'package:technical_assignment_flutter_app/screens/login_screen.dart';
 import 'package:technical_assignment_flutter_app/screens/register_screen.dart';
 // import 'package:technical_assignment_flutter_app/widgets/drawer.dart';

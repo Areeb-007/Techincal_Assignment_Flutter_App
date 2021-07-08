@@ -8,19 +8,10 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-// import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
-import 'package:technical_assignment_flutter_app/screens/dashboard_screen.dart';
-
 import 'employee_data.dart';
-// import 'package:technical_assignment_flutter_app/models/user.dart';
-// import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 
-// import 'package:http/http.dart' as http;
-
-// Create a Form widget.
 class UpdateEmployeeScreen extends StatefulWidget {
   final Employee emp;
   UpdateEmployeeScreen({required this.emp});
@@ -112,7 +103,20 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Error'),
+              title: Text(
+                'Error',
+                style: TextStyle(fontSize: 30),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EmployeeData()));
+                    },
+                    child: Text('Ok'))
+              ],
               content: Text('Employee Updation Failed'),
             );
           });
