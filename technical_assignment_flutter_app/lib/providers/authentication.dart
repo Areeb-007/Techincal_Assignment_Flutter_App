@@ -64,6 +64,11 @@ class Auth with ChangeNotifier {
     }
   }
 
+  //------------------------------------------Make Token empty after logout-----------------------------------//
+  void mmakeTokenNull() {
+    _token = '';
+  }
+
   //------------------------------------------SignUp---------------------------------------------------------//
 
   Future<bool> signUp(User user) async {
@@ -79,28 +84,34 @@ class Auth with ChangeNotifier {
       'CreatedBy': user.createdBy,
       'CreatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
     }));
-    var response = await http.post(Uri.parse(baseUrl + '/login/signup'),
-        headers: <String, String>{
-          'Content-type': 'application/json; charset=UTF-8'
-        },
-        body: jsonEncode(<String, Object>{
-          'FirstName': user.firstName,
-          'LastName': user.lastName,
-          'Username': user.username,
-          'Password': user.password,
-          'Address': user.address,
-          'PhoneNumber': user.phoneNumber,
-          'IsActive': user.isActice,
-          'IsDeleted': user.isDeleted,
-          'CreatedBy': user.createdBy,
-          'CreatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-        }));
+    var response;
+    try {
+      response = await http.post(Uri.parse(baseUrl + '/login/signup'),
+          headers: <String, String>{
+            'Content-type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(<String, Object>{
+            'FirstName': user.firstName,
+            'LastName': user.lastName,
+            'Username': user.username,
+            'Password': user.password,
+            'Address': user.address,
+            'PhoneNumber': user.phoneNumber,
+            'IsActive': user.isActice,
+            'IsDeleted': user.isDeleted,
+            'CreatedBy': user.createdBy,
+            'CreatedOn':
+                DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+          }));
+    } catch (ex) {
+      print(ex.toString());
+      return false;
+    }
 
     var responseBody = json.decode(response.body);
     print(responseBody);
     _token = responseBody['token'];
     _userID = responseBody['UserID'];
-    print(_token.isEmpty ? 'No token' : _userID);
 
     String? msg = responseBody['msg'];
 
@@ -110,7 +121,6 @@ class Auth with ChangeNotifier {
       _token = json.decode(response.body)['token'];
       _userID = responseBody['UserID'];
 
-      print(_token.isEmpty ? 'No token' : _userID);
       return true;
     }
   }

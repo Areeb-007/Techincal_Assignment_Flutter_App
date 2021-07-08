@@ -80,7 +80,7 @@ class _EmployeeDataState extends State<EmployeeData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Home page')),
+        appBar: AppBar(title: Text('Employees')),
         drawer: MainDrawer(empList),
         body: Center(
           child: FutureBuilder(
@@ -91,7 +91,7 @@ class _EmployeeDataState extends State<EmployeeData> {
                     : Center(child: CircularProgressIndicator());
               }),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Builder(
           builder: (context) => FloatingActionButton(
               onPressed: () => Navigator.pushReplacement(context,

@@ -91,7 +91,7 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
         .addEmployee(_editedEmployee);
     if (status) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Dashboard()));
+          context, MaterialPageRoute(builder: (context) => EmployeeData()));
     } else {
       showDialog(
           context: context,

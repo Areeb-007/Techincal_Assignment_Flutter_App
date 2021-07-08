@@ -13,7 +13,7 @@ Widget listViewWidget(List<Employee> empList) {
         .deleteEmployeeData(empID);
     if (status) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Dashboard()));
+          context, MaterialPageRoute(builder: (context) => EmployeeData()));
     } else {
       showDialog(
           context: context,

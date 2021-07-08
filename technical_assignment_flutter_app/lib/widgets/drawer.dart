@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:technical_assignment_flutter_app/main.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
+import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 // import 'package:technical_assignment_flutter_app/models/user.dart';
 import 'package:technical_assignment_flutter_app/screens/dashboard_screen.dart';
 import 'package:technical_assignment_flutter_app/screens/login_screen.dart';
@@ -55,8 +58,8 @@ class MainDrawer extends StatelessWidget {
             'Login',
             Icons.login,
             () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()));
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => MyHome()));
             },
           ),
           buildListTile(
@@ -73,6 +76,15 @@ class MainDrawer extends StatelessWidget {
             () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => Dashboard()));
+            },
+          ),
+          buildListTile(
+            'Logout',
+            Icons.logout,
+            () {
+              Provider.of<Auth>(context, listen: false).mmakeTokenNull();
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MyHome()));
             },
           ),
         ],

@@ -6,10 +6,9 @@ import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
 import 'package:technical_assignment_flutter_app/widgets/active_users.dart';
 import 'package:technical_assignment_flutter_app/widgets/designations_widget.dart';
+import 'package:technical_assignment_flutter_app/widgets/employee_details.dart';
 
 import 'package:technical_assignment_flutter_app/widgets/user_info.dart';
-
-import 'employee_data_on_DashBoard.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -151,7 +150,13 @@ class _DashboardState extends State<Dashboard> {
                       ? acticeUsers(context, snapshot.data as List<Employee>)
                       : Center(child: CircularProgressIndicator());
                 }),
-            EmployeeDataOnDashBoard(),
+            FutureBuilder(
+                future: fetchEmployees(),
+                builder: (context, snapshot) {
+                  return snapshot.data != null
+                      ? employeeInfo(context, snapshot.data as List<Employee>)
+                      : Center(child: CircularProgressIndicator());
+                }),
             FutureBuilder(
                 future: fetchEmployees(),
                 builder: (context, snapshot) {

@@ -47,14 +47,24 @@ class RegisterScreenState extends State<RegisterScreen> {
     _register.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    buffering = false;
+  }
+
   Future<void> _saveform() async {
     _formKey.currentState!.save();
     bool status =
         await Provider.of<Auth>(context, listen: false).signUp(_editedUser);
     if (status) {
+      buffering = false;
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => EmployeeData()));
     } else {
+      setState(() {
+        buffering = false;
+      });
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -78,12 +88,13 @@ class RegisterScreenState extends State<RegisterScreen> {
       isDeleted: false,
       createdBy: '',
       createdOn: DateTime.now());
-  bool buffering = true;
+  bool buffering = false;
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return buffering
-        ? Material(
+        ? Center(child: CircularProgressIndicator())
+        : Material(
             child: SingleChildScrollView(
               child: Container(
                 margin: EdgeInsets.all(20),
@@ -343,7 +354,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   // you'd often call a server or save the information in a database.
                                   _saveform();
                                   setState(() {
-                                    buffering = false;
+                                    buffering = true;
                                   });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
@@ -360,7 +371,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
             ),
-          )
-        : Center(child: CircularProgressIndicator());
+          );
   }
 }
