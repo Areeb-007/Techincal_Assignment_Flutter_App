@@ -305,7 +305,8 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                     DropDownFormField(
                       titleText: 'Select a designation',
                       hintText: 'Please choose one',
-                      value: emp.designation.toString(),
+                      // value: emp.designation.toString(),
+                      value:designation,
                       contentPadding: EdgeInsets.all(5),
                       // filled: true,
                       onSaved: (value) {
