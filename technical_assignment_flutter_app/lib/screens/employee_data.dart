@@ -11,6 +11,7 @@ import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
 // import 'package:technical_assignment_flutter_app/models/user.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
+import 'package:technical_assignment_flutter_app/screens/emp_data_screen.dart';
 // import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 import 'package:technical_assignment_flutter_app/widgets/drawer.dart';
 import 'package:technical_assignment_flutter_app/widgets/list_view_widget.dart';
@@ -92,13 +93,6 @@ class _EmployeeDataState extends State<EmployeeData> {
       list = apiResponse.data!;
     }
 
-    if (list.isEmpty) {
-      setState(() {
-        print("agia idher");
-        buffering = true;
-      });
-    }
-
     return list;
   }
 
@@ -125,13 +119,7 @@ class _EmployeeDataState extends State<EmployeeData> {
         onRefresh: () => Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => EmployeeData())),
         child: Center(
-          child: FutureBuilder(
-              future: fetchEmployees(),
-              builder: (context, snapshot) {
-                return snapshot.data != null
-                    ? listViewWidget(snapshot.data as List<Employee>)
-                    : Center(child: CircularProgressIndicator());
-              }),
+          child: EmployeeDataForMainPage(),
         ),
       ),
     );

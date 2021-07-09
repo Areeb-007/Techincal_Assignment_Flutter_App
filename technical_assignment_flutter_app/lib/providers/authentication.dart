@@ -194,9 +194,6 @@ class Auth with ChangeNotifier {
       apiResponse.errorMessage = 'Server Not Availabe';
       return apiResponse;
     }
-    var rest = json.decode(response.body)['data'];
-    list = rest.map<Employee>((json) => Employee.fromJson(json)).toList();
-    empList = list.toList();
     var responseBody = json.decode(response.body);
 
     print(responseBody);
@@ -204,9 +201,14 @@ class Auth with ChangeNotifier {
     msg_sc = responseBody['msg_sc'];
     if (msg.isNotEmpty) {
       apiResponse.error = true;
+      mmakeTokenNull();
       apiResponse.errorMessage = msg;
       return apiResponse;
     }
+    var rest = json.decode(response.body)['data'];
+    list = rest.map<Employee>((json) => Employee.fromJson(json)).toList();
+    empList = list.toList();
+
     apiResponse.error = false;
     apiResponse.errorMessage = '';
     apiResponse.data = list;

@@ -5,11 +5,10 @@ import 'package:technical_assignment_flutter_app/models/api_response.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
-import 'package:technical_assignment_flutter_app/widgets/active_users.dart';
-import 'package:technical_assignment_flutter_app/widgets/designations_widget.dart';
-import 'package:technical_assignment_flutter_app/widgets/employee_details.dart';
-
-import 'package:technical_assignment_flutter_app/widgets/user_info.dart';
+import 'package:technical_assignment_flutter_app/screens/active_user_screen.dart';
+import 'package:technical_assignment_flutter_app/screens/designation_screen.dart';
+import 'package:technical_assignment_flutter_app/screens/employee_details_screesn.dart';
+import 'package:technical_assignment_flutter_app/screens/user_info_screen.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -161,34 +160,10 @@ class _DashboardState extends State<Dashboard> {
         ),
         body: TabBarView(
           children: [
-            FutureBuilder(
-                future: fetchUser(),
-                builder: (context, snapshot) {
-                  return snapshot.data != null
-                      ? userInfo(context, snapshot.data as List<User>)
-                      : Center(child: CircularProgressIndicator());
-                }),
-            FutureBuilder(
-                future: fetchEmployees(),
-                builder: (context, snapshot) {
-                  return snapshot.data != null
-                      ? acticeUsers(context, snapshot.data as List<Employee>)
-                      : Center(child: CircularProgressIndicator());
-                }),
-            FutureBuilder(
-                future: fetchEmployees(),
-                builder: (context, snapshot) {
-                  return snapshot.data != null
-                      ? employeeInfo(context, snapshot.data as List<Employee>)
-                      : Center(child: CircularProgressIndicator());
-                }),
-            FutureBuilder(
-                future: fetchEmployees(),
-                builder: (context, snapshot) {
-                  return snapshot.data != null
-                      ? designations(context, snapshot.data as List<Employee>)
-                      : Center(child: CircularProgressIndicator());
-                })
+            CurrentUserInfo(),
+            ActiveUserScreen(),
+            AllEmployeesInfo(),
+            EmployeeDesignationInfo(),
           ],
         ),
       ),
