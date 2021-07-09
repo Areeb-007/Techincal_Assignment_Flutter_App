@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:technical_assignment_flutter_app/main.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 import 'employee_data.dart';
@@ -93,19 +94,40 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
   Future<void> _saveform() async {
     print(_editedEmployee.designation);
     _formKey.currentState!.save();
-    bool status = await Provider.of<Auth>(context, listen: false)
+    String status = await Provider.of<Auth>(context, listen: false)
         .updateEmployee(_editedEmployee);
-    if (status) {
+    if (status == 'OK') {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => EmployeeData()));
+    } else if (status == 'Session time expired') {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => MyHome()));
+                    },
+                    child: Text('Go to Login page'))
+              ],
+              title: Text('Error'),
+              content: Text(
+                status,
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          });
     } else {
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text(
-                'Error',
-                style: TextStyle(fontSize: 30),
+              title: Text('Error'),
+              content: Text(
+                status,
+                style: TextStyle(color: Colors.red),
               ),
               actions: [
                 TextButton(
@@ -117,7 +139,6 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                     },
                     child: Text('Ok'))
               ],
-              content: Text('Employee Updation Failed'),
             );
           });
     }

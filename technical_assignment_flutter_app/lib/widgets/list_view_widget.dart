@@ -7,9 +7,9 @@ import 'package:technical_assignment_flutter_app/screens/update_screen.dart';
 
 Widget listViewWidget(List<Employee> empList) {
   Future<void> callEmployeeDelete(BuildContext context, int empID) async {
-    bool status = await Provider.of<Auth>(context, listen: false)
+    String status = await Provider.of<Auth>(context, listen: false)
         .deleteEmployeeData(empID);
-    if (status) {
+    if (status == 'OK') {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => EmployeeData()));
     } else {
@@ -17,9 +17,10 @@ Widget listViewWidget(List<Employee> empList) {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text(
-                'Error',
-                style: TextStyle(fontSize: 30),
+              title: Text('Error'),
+              content: Text(
+                status,
+                style: TextStyle(color: Colors.red),
               ),
               actions: [
                 TextButton(
@@ -31,7 +32,6 @@ Widget listViewWidget(List<Employee> empList) {
                     },
                     child: Text('Ok'))
               ],
-              content: Text('Employee Deletion Failed'),
             );
           });
     }

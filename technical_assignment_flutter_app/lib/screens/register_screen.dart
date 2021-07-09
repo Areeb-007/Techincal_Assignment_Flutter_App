@@ -4,6 +4,7 @@
 import 'package:checkbox_formfield/checkbox_list_tile_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:technical_assignment_flutter_app/main.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 
@@ -55,12 +56,32 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _saveform() async {
     _formKey.currentState!.save();
-    bool status =
+    String status =
         await Provider.of<Auth>(context, listen: false).signUp(_editedUser);
-    if (status) {
+    if (status == 'OK') {
       buffering = false;
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => EmployeeData()));
+    } else if (status == 'Session time expired') {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => MyHome()));
+                    },
+                    child: Text('Go to Login page'))
+              ],
+              title: Text('Error'),
+              content: Text(
+                status,
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          });
     } else {
       setState(() {
         buffering = false;
@@ -69,8 +90,11 @@ class RegisterScreenState extends State<RegisterScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Error'),
-              content: Text('Sign up Failed'),
+              content: Text(
+                status,
+                style: TextStyle(color: Colors.red),
+              ),
+              title: Text('SignUp Failed'),
             );
           });
     }

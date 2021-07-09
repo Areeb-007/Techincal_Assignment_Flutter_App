@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:technical_assignment_flutter_app/main.dart';
 
 // import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
@@ -79,18 +80,51 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
   Future<void> _saveform() async {
     print(_editedEmployee.designation);
     _formKey.currentState!.save();
-    bool status = await Provider.of<Auth>(context, listen: false)
+    String status = await Provider.of<Auth>(context, listen: false)
         .addEmployee(_editedEmployee);
-    if (status) {
+    if (status == 'OK') {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => EmployeeData()));
+    } else if (status == 'Session time expired') {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => MyHome()));
+                    },
+                    child: Text('Go to Login page'))
+              ],
+              title: Text('Error'),
+              content: Text(
+                status,
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          });
     } else {
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EmployeeData()));
+                    },
+                    child: Text('Ok'))
+              ],
               title: Text('Error'),
-              content: Text('Employee Didnt Added'),
+              content: Text(
+                status,
+                style: TextStyle(color: Colors.red),
+              ),
             );
           });
     }

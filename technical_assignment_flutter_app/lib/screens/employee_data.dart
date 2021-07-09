@@ -1,6 +1,8 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:technical_assignment_flutter_app/main.dart';
+import 'package:technical_assignment_flutter_app/models/api_response.dart';
 // ignore: import_of_legacy_library_into_null_safe
 // import 'package:provider/provider.dart';
 
@@ -64,16 +66,39 @@ class _EmployeeDataState extends State<EmployeeData> {
       //     createdBy: 'createdBy',
       //     createdOn: DateTime.now()),
     ];
-    list = await Provider.of<Auth>(context, listen: false).getEmployeeData();
+    APIResponse<List<Employee>> apiResponse =
+        await Provider.of<Auth>(context, listen: false).getEmployeeData();
+    if (apiResponse.error) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => MyHome()));
+                    },
+                    child: Text('Go to Login page'))
+              ],
+              title: Text('Error'),
+              content: Text(
+                apiResponse.errorMessage,
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          });
+    } else {
+      list = apiResponse.data!;
+    }
+
     if (list.isEmpty) {
       setState(() {
         print("agia idher");
         buffering = true;
       });
     }
-    tempList =
-        await Provider.of<Auth>(context, listen: false).getEmployeeData();
-    //print(list);
+
     return list;
   }
 
@@ -96,23 +121,18 @@ class _EmployeeDataState extends State<EmployeeData> {
         ],
       ),
       drawer: MainDrawer(empList),
-      body: Center(
-        child: FutureBuilder(
-            future: fetchEmployees(),
-            builder: (context, snapshot) {
-              return snapshot.data != null
-                  ? listViewWidget(snapshot.data as List<Employee>)
-                  : Center(child: CircularProgressIndicator());
-            }),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Builder(
-        builder: (context) => FloatingActionButton(
-            onPressed: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => EmployeeData()));
-            },
-            child: Icon(Icons.refresh)),
+      body: RefreshIndicator(
+        onRefresh: () => Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => EmployeeData())),
+        child: Center(
+          child: FutureBuilder(
+              future: fetchEmployees(),
+              builder: (context, snapshot) {
+                return snapshot.data != null
+                    ? listViewWidget(snapshot.data as List<Employee>)
+                    : Center(child: CircularProgressIndicator());
+              }),
+        ),
       ),
     );
   }

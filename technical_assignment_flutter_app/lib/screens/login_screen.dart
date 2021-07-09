@@ -1,5 +1,6 @@
 // import 'dart:convert';
 // import 'package:provider/provider.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // import 'package:technical_assignment_flutter_app/models/user.dart';
@@ -36,9 +37,9 @@ class LoginScreenState extends State<LoginScreen> {
 
   Future<void> _saveform() async {
     _formKey.currentState!.save();
-    bool status = await Provider.of<Auth>(context, listen: false)
+    String status = await Provider.of<Auth>(context, listen: false)
         .signin(_editedUser.username, _editedUser.password);
-    if (status) {
+    if (status == 'OK') {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => EmployeeData()));
     } else {
@@ -46,8 +47,11 @@ class LoginScreenState extends State<LoginScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Login Error'),
-              content: Text('Login Failed'),
+              content: Text(
+                status,
+                style: TextStyle(color: Colors.red),
+              ),
+              title: Text('Login Failed'),
             );
           });
     }
@@ -75,9 +79,10 @@ class LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(labelText: 'Email'),
                   // The validator receives the text that the user has entered.
                   validator: (value) {
-                    bool status = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(value.toString());
+                    // bool status = RegExp(
+                    //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    //     .hasMatch(value.toString());
+                    bool status = EmailValidator.validate(value);
                     return status ? null : 'Invalid Email';
                   },
                   onSaved: (value) {

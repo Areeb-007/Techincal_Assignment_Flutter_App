@@ -32,7 +32,8 @@ dependencies:
   bubble_tab_indicator: ^0.1.4
   fl_chart: ^0.9.4
   pie_chart: ^5.0.0
-  # email_validator: '^1.0.6'
+  pull_to_refresh: ^2.0.0
+  email_validator: '^1.0.6'
 
 
   # The following adds the Cupertino Icons font to your application.
