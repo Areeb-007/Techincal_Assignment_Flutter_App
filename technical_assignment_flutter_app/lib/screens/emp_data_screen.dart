@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/models/api_response.dart';
@@ -44,25 +45,30 @@ class EmployeeDataForMainPage extends StatelessWidget {
       APIResponse<List<Employee>> apiResponse =
           await Provider.of<Auth>(context, listen: false).getEmployeeData();
       if (apiResponse.error) {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => MyHome()));
-                      },
-                      child: Text('Go to Login page'))
-                ],
-                title: Text('Error'),
-                content: Text(
-                  apiResponse.errorMessage,
-                  style: TextStyle(color: Colors.red),
-                ),
-              );
-            });
+        if (apiResponse.errorMessage == 'NO employee for User') {
+        } else {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyHome()));
+                        },
+                        child: Text('Go to Login page'))
+                  ],
+                  title: Text('Error'),
+                  content: Text(
+                    apiResponse.errorMessage,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                );
+              });
+        }
       } else {
         list = apiResponse.data!;
       }

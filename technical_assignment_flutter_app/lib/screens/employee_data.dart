@@ -14,7 +14,6 @@ import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 import 'package:technical_assignment_flutter_app/screens/emp_data_screen.dart';
 // import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 import 'package:technical_assignment_flutter_app/widgets/drawer.dart';
-import 'package:technical_assignment_flutter_app/widgets/list_view_widget.dart';
 
 import 'add_employee_screen.dart';
 
@@ -26,7 +25,7 @@ class EmployeeData extends StatefulWidget {
 }
 
 class _EmployeeDataState extends State<EmployeeData> {
-  late Future<List<Employee>> empList;
+  //late Future<List<Employee>> empList;
   late User user;
   bool buffering = false;
   List<Employee> tempList = [];
@@ -34,7 +33,7 @@ class _EmployeeDataState extends State<EmployeeData> {
   @override
   void initState() {
     super.initState();
-    empList = fetchEmployees();
+    // empList = fetchEmployees();
     print('Get Api Called from initState');
   }
 
@@ -114,7 +113,7 @@ class _EmployeeDataState extends State<EmployeeData> {
           )
         ],
       ),
-      drawer: MainDrawer(empList),
+      drawer: MainDrawer(),
       body: RefreshIndicator(
         onRefresh: () => Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => EmployeeData())),

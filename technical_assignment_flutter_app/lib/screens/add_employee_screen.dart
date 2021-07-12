@@ -1,8 +1,8 @@
 // import 'dart:convert';
 // import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:checkbox_formfield/checkbox_list_tile_formfield.dart';
 // ignore: import_of_legacy_library_into_null_safe
+import 'package:age/age.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -34,7 +34,8 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
   // Note: This is a GlobalKey<FormState>,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
-
+  int age = 0;
+  int estimatedAge = 0;
   //---------------------------------------------Focus node goe changing the focus between textfields--------------------------------------
   final _addFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
@@ -42,6 +43,9 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
   final _designationFocusNode = FocusNode();
   final _genderFocusNode = FocusNode();
   final _dateOfBirthFocusNode = FocusNode();
+
+  //-------------------------------------------------Controllers----------------------------------------------------------
+  final ageTextFieldController = TextEditingController();
 
   //----------------------------------------------Disposing Focus Nodes For Optimization---------------------------------------------------
   @override
@@ -68,6 +72,12 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
       }
       setState(() {
         dateOfBirth = value;
+        DateTime today = DateTime.now();
+        AgeDuration age2;
+        age2 = Age.dateDifference(fromDate: dateOfBirth, toDate: today);
+        age = age2.years;
+        estimatedAge = age;
+        ageTextFieldController.text = age.toString();
         _editedEmployee.setDateOfBirth = dateOfBirth!;
       });
     });
@@ -132,7 +142,7 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
 
 //-------------------------------------------------Date of Birth Variable------------------------------------
   DateTime? dateOfBirth;
-//--------------------------------------------------For gender
+//--------------------------------------------------For gender-----------------------------------------------
   GenderType gender = GenderType.Male;
 
   var _editedEmployee = Employee(
@@ -223,39 +233,17 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                             createdOn: _editedEmployee.createdOn);
                       },
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: 'Age'),
-                      // The validator receives the text that the user has entered.
-                      focusNode: _ageFocusNode,
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter an age';
-                        }
-                        if (int.tryParse(value)! <= 0) {
-                          return 'Please enter a valid age';
-                        }
-                      },
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context)
-                            .requestFocus(_designationFocusNode);
-                      },
-                      onSaved: (value) {
-                        _editedEmployee = Employee(
-                            empID: _editedEmployee.empID,
-                            userID: _editedEmployee.userID,
-                            name: _editedEmployee.name,
-                            email: _editedEmployee.email,
-                            age: int.parse(value!),
-                            designation: _editedEmployee.designation,
-                            gender: _editedEmployee.gender,
-                            dateOfBirth: _editedEmployee.dateOfBirth,
-                            isActive: _editedEmployee.isActive,
-                            isDeleted: _editedEmployee.isDeleted,
-                            createdBy: _editedEmployee.createdBy,
-                            createdOn: _editedEmployee.createdOn);
-                      },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(dateOfBirth == null
+                            ? 'Select Date Of Birth '
+                            : DateFormat().add_yMMMd().format(dateOfBirth)),
+                        TextButton(
+                            focusNode: _dateOfBirthFocusNode,
+                            onPressed: () => _showDateModal(),
+                            child: Text('Choose A Date'))
+                      ],
                     ),
                     DropDownFormField(
                       titleText: 'Select a designation',
@@ -344,68 +332,27 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(dateOfBirth == null
-                            ? 'Select Date Of Birth '
-                            : DateFormat().add_yMMMd().format(dateOfBirth)),
-                        TextButton(
-                            focusNode: _dateOfBirthFocusNode,
-                            onPressed: () => _showDateModal(),
-                            child: Text('Choose A Date'))
-                      ],
-                    ),
-                    CheckboxListTileFormField(
-                        title: Text('Is Active'),
-                        initialValue: true,
-                        controlAffinity: ListTileControlAffinity.trailing,
-                        onSaved: (value) {
-                          _editedEmployee = Employee(
-                              empID: _editedEmployee.empID,
-                              userID: _editedEmployee.userID,
-                              name: _editedEmployee.name,
-                              email: _editedEmployee.email,
-                              age: _editedEmployee.age,
-                              designation: _editedEmployee.designation,
-                              gender: _editedEmployee.gender,
-                              dateOfBirth: _editedEmployee.dateOfBirth,
-                              isActive: value,
-                              isDeleted: _editedEmployee.isDeleted,
-                              createdBy: _editedEmployee.createdBy,
-                              createdOn: _editedEmployee.createdOn);
-                        }),
-                    CheckboxListTileFormField(
-                        title: Text('Is Deleted'),
-                        initialValue: false,
-                        controlAffinity: ListTileControlAffinity.trailing,
-                        onSaved: (value) {
-                          _editedEmployee = Employee(
-                              empID: _editedEmployee.empID,
-                              userID: _editedEmployee.userID,
-                              name: _editedEmployee.name,
-                              email: _editedEmployee.email,
-                              age: _editedEmployee.age,
-                              designation: _editedEmployee.designation,
-                              gender: _editedEmployee.gender,
-                              dateOfBirth: _editedEmployee.dateOfBirth,
-                              isActive: _editedEmployee.isActive,
-                              isDeleted: value,
-                              createdBy: _editedEmployee.createdBy,
-                              createdOn: _editedEmployee.createdOn);
-                        }),
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Creater'),
+                      decoration: InputDecoration(labelText: 'Age'),
                       // The validator receives the text that the user has entered.
-                      // focusNode: _registerFocusNode,
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context).requestFocus(_addFocusNode);
-                      },
+                      controller: ageTextFieldController,
+                      focusNode: _ageFocusNode,
                       textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please a Creater name';
+                          return 'Please enter an age';
                         }
+                        if (int.tryParse(value)! <= 0) {
+                          return 'Please enter a valid age';
+                        }
+                        if (int.tryParse(value)! != estimatedAge) {
+                          return 'Your does not match with your Date of Birth';
+                        }
+                      },
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context)
+                            .requestFocus(_designationFocusNode);
                       },
                       onSaved: (value) {
                         _editedEmployee = Employee(
@@ -413,13 +360,13 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                             userID: _editedEmployee.userID,
                             name: _editedEmployee.name,
                             email: _editedEmployee.email,
-                            age: _editedEmployee.age,
+                            age: int.parse(value!),
                             designation: _editedEmployee.designation,
                             gender: _editedEmployee.gender,
                             dateOfBirth: _editedEmployee.dateOfBirth,
                             isActive: _editedEmployee.isActive,
                             isDeleted: _editedEmployee.isDeleted,
-                            createdBy: value as String,
+                            createdBy: _editedEmployee.createdBy,
                             createdOn: _editedEmployee.createdOn);
                       },
                     ),

@@ -1,15 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/main.dart';
+import 'package:technical_assignment_flutter_app/models/api_response.dart';
 import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/providers/authentication.dart';
 import 'package:technical_assignment_flutter_app/screens/dashboard_screen.dart';
 import 'package:technical_assignment_flutter_app/screens/register_screen.dart';
 
-class MainDrawer extends StatelessWidget {
+class MainDrawer extends StatefulWidget {
   // final User user;
-  final Future<List<Employee>> empList;
-  MainDrawer(this.empList);
+
+  @override
+  _MainDrawerState createState() => _MainDrawerState();
+}
+
+class _MainDrawerState extends State<MainDrawer> {
+  // late Future<List<Employee>> empList;
+  Future<List<Employee>> fetchEmployees() async {
+    List<Employee> list = [
+      // Employee(
+      //     empID: 12,
+      //     userID: 12,
+      //     name: 'name',
+      //     email: 'email',
+      //     age: 12,
+      //     designation: 'designation',
+      //     gender: 'gender',
+      //     dateOfBirth: DateTime.now(),
+      //     isActive: true,
+      //     isDeleted: false,
+      //     createdBy: 'createdBy',
+      //     createdOn: DateTime.now()),
+      // Employee(
+      //     empID: 12,
+      //     userID: 12,
+      //     name: 'name',
+      //     email: 'email',
+      //     age: 12,
+      //     designation: 'designation',
+      //     gender: 'gender',
+      //     dateOfBirth: DateTime.now(),
+      //     isActive: true,
+      //     isDeleted: false,
+      //     createdBy: 'createdBy',
+      //     createdOn: DateTime.now()),
+    ];
+    APIResponse<List<Employee>> apiResponse =
+        await Provider.of<Auth>(context, listen: false).getEmployeeData();
+    if (apiResponse.error) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => MyHome()));
+                    },
+                    child: Text('Go to Login page'))
+              ],
+              title: Text('Error'),
+              content: Text(
+                apiResponse.errorMessage,
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          });
+    } else {
+      list = apiResponse.data!;
+    }
+
+    return list;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //empList = fetchEmployees();
+    print('Get Api Called from initState');
+  }
 
   Widget buildListTile(String title, IconData icon, Function tapHandler) {
     return ListTile(

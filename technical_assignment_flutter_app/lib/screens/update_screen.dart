@@ -1,7 +1,6 @@
 // import 'dart:convert';
 // import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:checkbox_formfield/checkbox_list_tile_formfield.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
@@ -306,7 +305,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                       titleText: 'Select a designation',
                       hintText: 'Please choose one',
                       // value: emp.designation.toString(),
-                      value:designation,
+                      value: designation,
                       contentPadding: EdgeInsets.all(5),
                       // filled: true,
                       onSaved: (value) {
@@ -401,74 +400,6 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                             onPressed: () => _showDateModal(),
                             child: Text('Choose A Date'))
                       ],
-                    ),
-                    CheckboxListTileFormField(
-                        title: Text('Is Active'),
-                        initialValue: emp.isActive,
-                        controlAffinity: ListTileControlAffinity.trailing,
-                        onSaved: (value) {
-                          _editedEmployee = Employee(
-                              empID: _editedEmployee.empID,
-                              userID: _editedEmployee.userID,
-                              name: _editedEmployee.name,
-                              email: _editedEmployee.email,
-                              age: _editedEmployee.age,
-                              designation: _editedEmployee.designation,
-                              gender: _editedEmployee.gender,
-                              dateOfBirth: _editedEmployee.dateOfBirth,
-                              isActive: value,
-                              isDeleted: _editedEmployee.isDeleted,
-                              createdBy: _editedEmployee.createdBy,
-                              createdOn: _editedEmployee.createdOn);
-                        }),
-                    CheckboxListTileFormField(
-                        title: Text('Is Deleted'),
-                        initialValue: emp.isDeleted,
-                        controlAffinity: ListTileControlAffinity.trailing,
-                        onSaved: (value) {
-                          _editedEmployee = Employee(
-                              empID: _editedEmployee.empID,
-                              userID: _editedEmployee.userID,
-                              name: _editedEmployee.name,
-                              email: _editedEmployee.email,
-                              age: _editedEmployee.age,
-                              designation: _editedEmployee.designation,
-                              gender: _editedEmployee.gender,
-                              dateOfBirth: _editedEmployee.dateOfBirth,
-                              isActive: _editedEmployee.isActive,
-                              isDeleted: value,
-                              createdBy: _editedEmployee.createdBy,
-                              createdOn: _editedEmployee.createdOn);
-                        }),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: 'Creater'),
-                      // The validator receives the text that the user has entered.
-                      // focusNode: _registerFocusNode,
-                      initialValue: emp.createdBy,
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context).requestFocus(_addFocusNode);
-                      },
-                      textInputAction: TextInputAction.next,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please a Creater name';
-                        }
-                      },
-                      onSaved: (value) {
-                        _editedEmployee = Employee(
-                            empID: _editedEmployee.empID,
-                            userID: _editedEmployee.userID,
-                            name: _editedEmployee.name,
-                            email: _editedEmployee.email,
-                            age: _editedEmployee.age,
-                            designation: _editedEmployee.designation,
-                            gender: _editedEmployee.gender,
-                            dateOfBirth: _editedEmployee.dateOfBirth,
-                            isActive: _editedEmployee.isActive,
-                            isDeleted: _editedEmployee.isDeleted,
-                            createdBy: value as String,
-                            createdOn: _editedEmployee.createdOn);
-                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),

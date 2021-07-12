@@ -1,7 +1,6 @@
 // import 'dart:convert';
 // import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:checkbox_formfield/checkbox_list_tile_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:technical_assignment_flutter_app/main.dart';
@@ -297,73 +296,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   isActice: _editedUser.isActice,
                                   isDeleted: _editedUser.isDeleted,
                                   createdBy: _editedUser.createdBy,
-                                  createdOn: _editedUser.createdOn);
-                            },
-                          ),
-                          CheckboxListTileFormField(
-                            title: Text('Is Active'),
-                            initialValue: true,
-                            controlAffinity: ListTileControlAffinity.trailing,
-                            onSaved: (bool value) {
-                              _editedUser = User(
-                                  userID: 0,
-                                  firstName: _editedUser.firstName,
-                                  lastName: _editedUser.lastName,
-                                  username: _editedUser.username,
-                                  password: _editedUser.password,
-                                  address: _editedUser.address,
-                                  phoneNumber: _editedUser.phoneNumber,
-                                  isActice: value,
-                                  isDeleted: _editedUser.isDeleted,
-                                  createdBy: _editedUser.createdBy,
-                                  createdOn: _editedUser.createdOn);
-                            },
-                          ),
-                          CheckboxListTileFormField(
-                            title: Text('Is Deleted'),
-                            initialValue: false,
-                            controlAffinity: ListTileControlAffinity.trailing,
-                            onSaved: (bool value) {
-                              _editedUser = User(
-                                  userID: 0,
-                                  firstName: _editedUser.firstName,
-                                  lastName: _editedUser.lastName,
-                                  username: _editedUser.username,
-                                  password: _editedUser.password,
-                                  address: _editedUser.address,
-                                  phoneNumber: _editedUser.phoneNumber,
-                                  isActice: _editedUser.isActice,
-                                  isDeleted: value,
-                                  createdBy: _editedUser.createdBy,
-                                  createdOn: _editedUser.createdOn);
-                            },
-                          ),
-                          TextFormField(
-                            decoration:
-                                InputDecoration(labelText: 'Creator Name'),
-                            textInputAction: TextInputAction.next,
-                            // The validator receives the text that the user has entered.
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a Creater Name';
-                              }
-                            },
-                            // focusNode: _phoneNumber,
-                            onFieldSubmitted: (_) {
-                              FocusScope.of(context).requestFocus(_register);
-                            },
-                            onSaved: (value) {
-                              _editedUser = User(
-                                  userID: 0,
-                                  firstName: _editedUser.firstName,
-                                  lastName: _editedUser.lastName,
-                                  username: _editedUser.username,
-                                  password: _editedUser.password,
-                                  address: _editedUser.address,
-                                  phoneNumber: _editedUser.phoneNumber,
-                                  isActice: _editedUser.isActice,
-                                  isDeleted: _editedUser.isDeleted,
-                                  createdBy: value as String,
                                   createdOn: _editedUser.createdOn);
                             },
                           ),

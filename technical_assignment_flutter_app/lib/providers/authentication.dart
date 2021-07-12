@@ -201,7 +201,7 @@ class Auth with ChangeNotifier {
     msg_sc = responseBody['msg_sc'];
     if (msg.isNotEmpty) {
       apiResponse.error = true;
-      mmakeTokenNull();
+
       apiResponse.errorMessage = msg;
       return apiResponse;
     }
@@ -311,6 +311,7 @@ class Auth with ChangeNotifier {
 //-------------------------------------------------Get User Data------------------------------------------
 
   Future<List<User>> getUserData() async {
+    print(_token);
     var response = await http.get(
       Uri.parse(baseUrl + '/rest/dashboard'),
       headers: <String, String>{
