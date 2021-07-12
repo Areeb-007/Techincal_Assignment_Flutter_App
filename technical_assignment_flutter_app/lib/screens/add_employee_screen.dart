@@ -3,6 +3,7 @@
 // ignore: import_of_legacy_library_into_null_safe
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:age/age.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -233,17 +234,21 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                             createdOn: _editedEmployee.createdOn);
                       },
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(dateOfBirth == null
-                            ? 'Select Date Of Birth '
-                            : DateFormat().add_yMMMd().format(dateOfBirth)),
-                        TextButton(
-                            focusNode: _dateOfBirthFocusNode,
-                            onPressed: () => _showDateModal(),
-                            child: Text('Choose A Date'))
-                      ],
+                    Container(
+                      margin: EdgeInsets.all(12),
+                      padding: EdgeInsets.all(12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(dateOfBirth == null
+                              ? 'Select Date Of Birth '
+                              : DateFormat().add_yMMMd().format(dateOfBirth)),
+                          TextButton(
+                              focusNode: _dateOfBirthFocusNode,
+                              onPressed: () => _showDateModal(),
+                              child: Text('Choose A Date'))
+                        ],
+                      ),
                     ),
                     DropDownFormField(
                       titleText: 'Select a designation',
@@ -386,6 +391,18 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                           }
                         },
                         child: Text('Add Employee'),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EmployeeData()));
+                        },
+                        child: Text('Back'),
                       ),
                     ),
                   ],

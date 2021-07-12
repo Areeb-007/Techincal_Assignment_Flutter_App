@@ -48,6 +48,12 @@ class Employee {
         designation: json['Designation'],
         gender: json['Gender'],
         dateOfBirth: DateTime.parse(json['DateOfBirth']),
+        //----------------------------------------------------For the Manipulation of the bit data type-----------------
+        // isActive: json['IsActive']['data'][0] == 1 ? true : false,
+        // isDeleted: json['IsDeleted']['data'][0] == 1 ? true : false,
+
+        //----------------------------------------------------For the Manipulation of the bool data type-----------------
+
         isActive: json['IsActive'],
         isDeleted: json['IsDeleted'],
         createdBy: json['CreatedBy'],

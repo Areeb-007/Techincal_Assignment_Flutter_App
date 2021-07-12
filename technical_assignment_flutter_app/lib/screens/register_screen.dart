@@ -309,15 +309,25 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   // If the form is valid, display a snackbar. In the real world,
                                   // you'd often call a server or save the information in a database.
                                   _saveform();
-                                  setState(() {
-                                    buffering = true;
-                                  });
+
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content: Text('Processing Data')));
                                 }
                               },
                               child: Text('Register'),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MyHome()));
+                              },
+                              child: Text('Back'),
                             ),
                           ),
                         ],

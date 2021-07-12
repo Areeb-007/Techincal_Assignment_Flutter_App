@@ -23,17 +23,17 @@ class _MyAppState extends State<MyApp> {
         providers: [ChangeNotifierProvider.value(value: Auth())],
         child: MaterialApp(
           home: MyHome(),
-          theme: ThemeData(
-            primarySwatch: Colors.pink,
-            accentColor: Colors.amber,
-            canvasColor: Color.fromRGBO(255, 254, 229, 1),
-            fontFamily: 'Raleway',
-            textTheme: ThemeData.light().textTheme.copyWith(
-                  bodyText2: TextStyle(
-                    color: Color.fromRGBO(20, 51, 51, 1),
-                  ),
-                ),
-          ),
+          // theme: ThemeData(
+          //   primarySwatch: Colors.pink,
+          //   accentColor: Colors.amber,
+          //   canvasColor: Color.fromRGBO(255, 254, 229, 1),
+          //   fontFamily: 'Raleway',
+          //   textTheme: ThemeData.light().textTheme.copyWith(
+          //         bodyText2: TextStyle(
+          //           color: Color.fromRGBO(20, 51, 51, 1),
+          //         ),
+          //       ),
+          // ),
           debugShowCheckedModeBanner: false,
         ));
   }
@@ -62,7 +62,7 @@ class _MyHomeState extends State<MyHome> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.green,
         accentColor: Colors.amber,
         canvasColor: Color.fromRGBO(255, 254, 229, 1),
         fontFamily: 'Raleway',
@@ -103,18 +103,14 @@ class _MyHomeState extends State<MyHome> {
                         padding: EdgeInsets.all(12),
                         child: Text(
                           'Welcome',
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorDark,
-                              fontSize: 40),
+                          style: TextStyle(fontSize: 40),
                           textAlign: TextAlign.center,
                         ),
                       ),
                       LoginScreen(changeBufferingStateToTrue),
                       Text(
                         'or',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorDark,
-                            fontSize: 20),
+                        style: TextStyle(fontSize: 20),
                         textAlign: TextAlign.center,
                       ),
                       Padding(

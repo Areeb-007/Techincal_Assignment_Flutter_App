@@ -11,7 +11,7 @@ import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
 
 class Auth with ChangeNotifier {
-  static const baseUrl = 'http://192.168.18.118:3000';
+  static const baseUrl = 'http://192.168.18.118:2000';
   String msg = '';
   String msg_sc = '';
   String _token = '';
@@ -99,11 +99,6 @@ class Auth with ChangeNotifier {
             'Password': user.password,
             'Address': user.address,
             'PhoneNumber': user.phoneNumber,
-            'IsActive': user.isActice,
-            'IsDeleted': user.isDeleted,
-            'CreatedBy': user.createdBy,
-            'CreatedOn':
-                DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
           }));
     } catch (ex) {
       print(ex.toString());
@@ -134,10 +129,6 @@ class Auth with ChangeNotifier {
       'Designation': emp.designation,
       'Gender': emp.gender,
       'DateOfBirth': DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.dateOfBirth),
-      'IsActive': emp.isActive,
-      'IsDeleted': emp.isDeleted,
-      'CreatedBy': emp.createdBy,
-      'CreatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
     }));
     var response;
     try {
@@ -155,11 +146,6 @@ class Auth with ChangeNotifier {
             'Gender': emp.gender,
             'DateOfBirth':
                 DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.dateOfBirth),
-            'IsActive': emp.isActive,
-            'IsDeleted': emp.isDeleted,
-            'CreatedBy': emp.createdBy,
-            'CreatedOn':
-                DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
           }));
     } catch (ex) {
       print(ex);
@@ -249,12 +235,6 @@ class Auth with ChangeNotifier {
       'Designation': emp.designation,
       'Gender': emp.gender,
       'DateOfBirth': DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.dateOfBirth),
-      'IsActive': emp.isActive,
-      'IsDeleted': emp.isDeleted,
-      'CreatedBy': emp.createdBy,
-      'CreatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.createdOn),
-      'UpdatedBy': emp.createdBy,
-      'UpdatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
     }));
     var response;
     try {
@@ -273,14 +253,6 @@ class Auth with ChangeNotifier {
                 'Gender': emp.gender,
                 'DateOfBirth':
                     DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.dateOfBirth),
-                'IsActive': emp.isActive,
-                'IsDeleted': emp.isDeleted,
-                'CreatedBy': emp.createdBy,
-                'CreatedOn':
-                    DateFormat('yyyy-MM-dd HH:mm:ss').format(emp.createdOn),
-                'UpdatedBy': emp.createdBy,
-                'UpdatedOn':
-                    DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
               }));
     } catch (ex) {
       print(ex.toString());

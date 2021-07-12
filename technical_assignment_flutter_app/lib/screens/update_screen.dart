@@ -2,6 +2,8 @@
 // import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 // ignore: import_of_legacy_library_into_null_safe
+import 'package:age/age.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -35,6 +37,8 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
   final _formKey = GlobalKey<FormState>();
   final Employee emp;
   UpdateEmployeeState(this.emp);
+  int age = 0;
+  int estimatedAge = 0;
   //---------------------------------------------Focus node goe changing the focus between textfields--------------------------------------
   final _addFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
@@ -43,6 +47,8 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
   final _genderFocusNode = FocusNode();
   final _dateOfBirthFocusNode = FocusNode();
 
+  //-------------------------------------------------Controllers----------------------------------------------------------
+  final ageTextFieldController = TextEditingController();
   //----------------------------------------------Disposing Focus Nodes For Optimization---------------------------------------------------
   @override
   void dispose() {
@@ -68,6 +74,12 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
       }
       setState(() {
         dateOfBirth = value;
+        DateTime today = DateTime.now();
+        AgeDuration age2;
+        age2 = Age.dateDifference(fromDate: dateOfBirth, toDate: today);
+        age = age2.years;
+        estimatedAge = age;
+        ageTextFieldController.text = age.toString();
         _editedEmployee.setDateOfBirth = dateOfBirth!;
       });
     });
@@ -77,6 +89,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
   void initState() {
     super.initState();
     designation = emp.designation;
+    ageTextFieldController.text = emp.age.toString();
     if (emp.gender == "Male") {
       gender = GenderType.Male;
     } else if (emp.gender == "Female") {
@@ -266,40 +279,21 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                             createdOn: _editedEmployee.createdOn);
                       },
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: 'Age'),
-                      // The validator receives the text that the user has entered.
-                      focusNode: _ageFocusNode,
-                      initialValue: emp.age.toString(),
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter an age';
-                        }
-                        if (int.tryParse(value)! <= 0) {
-                          return 'Please enter a valid age';
-                        }
-                      },
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context)
-                            .requestFocus(_designationFocusNode);
-                      },
-                      onSaved: (value) {
-                        _editedEmployee = Employee(
-                            empID: _editedEmployee.empID,
-                            userID: _editedEmployee.userID,
-                            name: _editedEmployee.name,
-                            email: _editedEmployee.email,
-                            age: int.parse(value!),
-                            designation: _editedEmployee.designation,
-                            gender: _editedEmployee.gender,
-                            dateOfBirth: _editedEmployee.dateOfBirth,
-                            isActive: _editedEmployee.isActive,
-                            isDeleted: _editedEmployee.isDeleted,
-                            createdBy: _editedEmployee.createdBy,
-                            createdOn: _editedEmployee.createdOn);
-                      },
+                    Container(
+                      margin: EdgeInsets.all(12),
+                      padding: EdgeInsets.all(12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(dateOfBirth == null
+                              ? 'Select Date Of Birth '
+                              : DateFormat().add_yMMMd().format(dateOfBirth)),
+                          TextButton(
+                              focusNode: _dateOfBirthFocusNode,
+                              onPressed: () => _showDateModal(),
+                              child: Text('Choose A Date'))
+                        ],
+                      ),
                     ),
                     DropDownFormField(
                       titleText: 'Select a designation',
@@ -389,17 +383,44 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(dateOfBirth == null
-                            ? 'Select Date Of Birth '
-                            : DateFormat().add_yMMMd().format(dateOfBirth)),
-                        TextButton(
-                            focusNode: _dateOfBirthFocusNode,
-                            onPressed: () => _showDateModal(),
-                            child: Text('Choose A Date'))
-                      ],
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'Age'),
+                      // The validator receives the text that the user has entered.
+                      focusNode: _ageFocusNode,
+                      controller: ageTextFieldController,
+
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter an age';
+                        }
+                        if (int.tryParse(value)! <= 0) {
+                          return 'Please enter a valid age';
+                        }
+                        if (int.tryParse(value)! != estimatedAge) {
+                          return 'Your does not match with your Date of Birth';
+                        }
+                      },
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context)
+                            .requestFocus(_designationFocusNode);
+                      },
+                      onSaved: (value) {
+                        _editedEmployee = Employee(
+                            empID: _editedEmployee.empID,
+                            userID: _editedEmployee.userID,
+                            name: _editedEmployee.name,
+                            email: _editedEmployee.email,
+                            age: int.parse(value!),
+                            designation: _editedEmployee.designation,
+                            gender: _editedEmployee.gender,
+                            dateOfBirth: _editedEmployee.dateOfBirth,
+                            isActive: _editedEmployee.isActive,
+                            isDeleted: _editedEmployee.isDeleted,
+                            createdBy: _editedEmployee.createdBy,
+                            createdOn: _editedEmployee.createdOn);
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -417,6 +438,18 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
                           }
                         },
                         child: Text('Update Employee'),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EmployeeData()));
+                        },
+                        child: Text('Back'),
                       ),
                     ),
                   ],

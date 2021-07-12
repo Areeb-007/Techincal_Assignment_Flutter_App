@@ -27,43 +27,45 @@ Widget acticeUsers(BuildContext context, List<Employee> empList) {
 
   return Container(
       child: Center(
-          child: Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      Container(
-          margin: EdgeInsets.all(20),
-          padding: EdgeInsets.all(20),
-          child: Text('Total Actice Users : ${calculateActiveUser()}')),
-      Container(
-          margin: EdgeInsets.all(20),
-          padding: EdgeInsets.all(20),
-          child: Text('Total Users are : ${empList.length}')),
-      PieChart(
-        dataMap: dataMap,
-        animationDuration: Duration(milliseconds: 800),
-        chartLegendSpacing: 32,
-        chartRadius: MediaQuery.of(context).size.width / 3.2,
-        colorList: colorList,
-        initialAngleInDegree: 0,
-        chartType: ChartType.ring,
-        ringStrokeWidth: 32,
-        legendOptions: LegendOptions(
-          legendShape: BoxShape.circle,
-          showLegendsInRow: false,
-          legendPosition: LegendPosition.right,
-          showLegends: true,
-          legendTextStyle: TextStyle(
-            fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+            margin: EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
+            child: Text('Total Actice Users : ${calculateActiveUser()}')),
+        Container(
+            margin: EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
+            child: Text('Total Users are : ${empList.length}')),
+        PieChart(
+          dataMap: dataMap,
+          animationDuration: Duration(milliseconds: 800),
+          chartLegendSpacing: 32,
+          chartRadius: MediaQuery.of(context).size.width / 3.2,
+          colorList: colorList,
+          initialAngleInDegree: 0,
+          chartType: ChartType.ring,
+          ringStrokeWidth: 32,
+          legendOptions: LegendOptions(
+            legendShape: BoxShape.circle,
+            showLegendsInRow: false,
+            legendPosition: LegendPosition.right,
+            showLegends: true,
+            legendTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        chartValuesOptions: ChartValuesOptions(
-          showChartValueBackground: true,
-          showChartValues: true,
-          showChartValuesInPercentage: false,
-          showChartValuesOutside: false,
-          decimalPlaces: 1,
-        ),
-      )
-    ],
+          chartValuesOptions: ChartValuesOptions(
+            showChartValueBackground: true,
+            showChartValues: true,
+            showChartValuesInPercentage: false,
+            showChartValuesOutside: false,
+            decimalPlaces: 1,
+          ),
+        )
+      ],
+    ),
   )));
 }

@@ -102,59 +102,62 @@ class _MainDrawerState extends State<MainDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: 120,
-            width: double.infinity,
-            padding: EdgeInsets.all(20),
-            alignment: Alignment.centerLeft,
-            color: Theme.of(context).accentColor,
-            child: Text(
-              'Technical Assignment !',
-              style: TextStyle(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 120,
+              width: double.infinity,
+              padding: EdgeInsets.all(20),
+              alignment: Alignment.centerLeft,
+              color: Theme.of(context).primaryColor,
+              child: Text(
+                'Technical Assignment !',
+                style: TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 30,
-                  color: Theme.of(context).primaryColor),
+                  color: Colors.white,
+                ),
+              ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          buildListTile(
-            'Login',
-            Icons.login,
-            () {
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => MyHome()));
-            },
-          ),
-          buildListTile(
-            'Register',
-            Icons.app_registration_outlined,
-            () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => RegisterScreen()));
-            },
-          ),
-          buildListTile(
-            'Dashboard',
-            Icons.dashboard,
-            () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Dashboard()));
-            },
-          ),
-          buildListTile(
-            'Logout',
-            Icons.logout,
-            () {
-              Provider.of<Auth>(context, listen: false).mmakeTokenNull();
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MyHome()));
-            },
-          ),
-        ],
+            SizedBox(
+              height: 20,
+            ),
+            buildListTile(
+              'Login',
+              Icons.login,
+              () {
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => MyHome()));
+              },
+            ),
+            buildListTile(
+              'Register',
+              Icons.app_registration_outlined,
+              () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()));
+              },
+            ),
+            buildListTile(
+              'Dashboard',
+              Icons.dashboard,
+              () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Dashboard()));
+              },
+            ),
+            buildListTile(
+              'Logout',
+              Icons.logout,
+              () {
+                Provider.of<Auth>(context, listen: false).mmakeTokenNull();
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => MyHome()));
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
