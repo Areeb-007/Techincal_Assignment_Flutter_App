@@ -354,6 +354,9 @@ class AddEmployeeState extends State<AddEmployeeScreen> {
                         if (int.tryParse(value)! != estimatedAge) {
                           return 'Your does not match with your Date of Birth';
                         }
+                        if (int.tryParse(value)! < 18) {
+                          return 'Age must be above 18';
+                        }
                       },
                       onFieldSubmitted: (_) {
                         FocusScope.of(context)

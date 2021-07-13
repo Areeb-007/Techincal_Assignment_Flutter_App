@@ -143,7 +143,7 @@ class _MainDrawerState extends State<MainDrawer> {
               'Dashboard',
               Icons.dashboard,
               () {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => Dashboard()));
               },
             ),
@@ -152,7 +152,7 @@ class _MainDrawerState extends State<MainDrawer> {
               Icons.logout,
               () {
                 Provider.of<Auth>(context, listen: false).mmakeTokenNull();
-                Navigator.push(
+                Navigator.pushReplacement(
                     context, MaterialPageRoute(builder: (context) => MyHome()));
               },
             ),

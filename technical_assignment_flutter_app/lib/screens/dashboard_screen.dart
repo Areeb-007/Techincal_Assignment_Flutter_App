@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:technical_assignment_flutter_app/screens/active_user_screen.dart';
 import 'package:technical_assignment_flutter_app/screens/designation_screen.dart';
+import 'package:technical_assignment_flutter_app/screens/employee_data.dart';
 import 'package:technical_assignment_flutter_app/screens/employee_details_screesn.dart';
 import 'package:technical_assignment_flutter_app/screens/user_info_screen.dart';
 
@@ -44,6 +45,18 @@ class _DashboardState extends State<Dashboard> {
             ],
           ),
           title: Text('Dashboard'),
+          actions: [
+            Builder(
+              builder: (context) => IconButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EmployeeData()));
+                  },
+                  icon: Icon(Icons.exit_to_app)),
+            )
+          ],
         ),
         body: TabBarView(
           children: [

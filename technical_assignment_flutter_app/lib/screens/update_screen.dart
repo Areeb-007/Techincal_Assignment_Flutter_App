@@ -90,6 +90,7 @@ class UpdateEmployeeState extends State<UpdateEmployeeScreen> {
     super.initState();
     designation = emp.designation;
     ageTextFieldController.text = emp.age.toString();
+    estimatedAge = emp.age;
     if (emp.gender == "Male") {
       gender = GenderType.Male;
     } else if (emp.gender == "Female") {

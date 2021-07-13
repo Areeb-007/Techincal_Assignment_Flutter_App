@@ -59,6 +59,9 @@ Widget listViewWidget(List<Employee> empList) {
         itemBuilder: (context, position) {
           return Card(
             child: ListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
               onTap: () => updateData(context, empList[position]),
               title: Text(
                 '${empList[position].name}',

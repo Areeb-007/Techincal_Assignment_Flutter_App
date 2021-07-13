@@ -11,7 +11,7 @@ import 'package:technical_assignment_flutter_app/models/employee.dart';
 import 'package:technical_assignment_flutter_app/models/user.dart';
 
 class Auth with ChangeNotifier {
-  static const baseUrl = 'http://192.168.18.118:2000';
+  static const baseUrl = 'http://192.168.18.118:3000';
   String msg = '';
   String msg_sc = '';
   String _token = '';
@@ -81,10 +81,6 @@ class Auth with ChangeNotifier {
       'Password': user.password,
       'Address': user.address,
       'PhoneNumber': user.phoneNumber,
-      'IsActice': user.isActice,
-      'IsDeleted': user.isDeleted,
-      'CreatedBy': user.createdBy,
-      'CreatedOn': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
     }));
     var response;
     try {
